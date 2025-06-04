@@ -16,7 +16,6 @@ const App = () => {
   return (
     <Router>
       <div className="App">
-        <Navbar />
         <main className="container">
           <Routes>
             <Route path="/" element={<Header />} />
@@ -32,7 +31,8 @@ const App = () => {
             <Route path="/auth" element={<AuthPage />} />
           </Routes>
         </main>
-        <Footer />
+        <Navbar />
+        {/* <Footer /> */}
       </div>
     </Router>
   );

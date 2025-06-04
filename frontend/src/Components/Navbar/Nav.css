@@ -8,26 +8,17 @@
 }
 
 .nav-container {
-  font-family: "Montserrat", sans-serif;
-  font-size: 18px;
-  font-weight: 500;
+  position: fixed;
+  bottom: 0;
+  height: 5vh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 30px;
-  background-color: var(--gray-900);
-  border-bottom: 1px solid var(--gray-950);
+  padding: 8px;
+  background-color: #121212;
+  border: 1px solid var(--gray-950);
   flex-wrap: wrap;
-}
-
-.left-container img {
-  width: 8rem;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out;
-}
-
-.left-container img:hover {
-  transform: scale(1.05);
 }
 
 .center-container {
@@ -37,9 +28,11 @@
 }
 
 .nav-links {
+  flex: 1;
   display: flex;
-  gap: 40px;
+  justify-content: center;
   align-items: center;
+  gap: 40px;
 }
 
 .nav-links .nav-item {
@@ -60,97 +53,11 @@
   gap: 10px;
 }
 
-.desktop-login-btn {
-  border: 1px solid white;
-  color: black;
-  padding: 10px;
-  border-radius: 10px;
-  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
-  cursor: pointer;
-  background-color: white;
-  font-family: "Montserrat", sans-serif;
-}
-
-.desktop-login-btn:hover {
-  transform: scale(1.1);
-  background-color: var(--roxo-codi);
-  border: none;
-  color: white;
-}
-
-.right-container-logged {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: white;
-  padding: 10px;
-  border-radius: 10px;
-  white-space: nowrap;
-}
-
-.hamburger {
-  display: none;
-  font-size: 24px;
-  color: white;
-  cursor: pointer;
-}
-
-.mobile-login-btn {
-  display: none;
-  border: 1px solid white;
-  color: white;
-  padding: 10px;
-  border-radius: 10px;
-  background: transparent;
-  font-family: "Montserrat", sans-serif;
-  font-size: 16px;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-}
-
-.mobile-login-btn:hover {
-  background-color: var(--roxo-codi);
-  border: none;
-}
-
 .material-symbols-outlined {
   cursor: pointer;
 }
 
-@media (max-width: 1100px) {
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 3.5rem;
-    right: 0;
-    background-color: var(--gray-900);
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 15px 0;
-    z-index: 1000;
-  }
-
-  .nav-links.show {
-    display: flex;
-  }
-
-  .hamburger {
-    display: block;
-  }
-
-  .desktop-login-btn {
-    display: none;
-  }
-
-  .mobile-login-btn {
-    display: block;
-  }
-
-  .right-container-logged {
-    position: static;
-    margin-top: 10px;
-    justify-content: center;
-  }
+.user-img {
+  height: 4vh;
+  border-radius: 50%;
 }

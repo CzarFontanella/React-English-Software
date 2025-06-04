@@ -24,42 +24,52 @@ const Navbar = ({ voltarParaInicio }) => {
 
   return (
     <div className="nav-container">
-      <div className="left-container" onClick={voltarParaInicio}>
-        <Link to="/">
-          <img src={navlogo} alt="Logo" />
-        </Link>
-      </div>
-
       <div className="center-container">
         <div className={`nav-links ${menuOpen ? "show" : ""}`}>
+          <Link
+            to="/"
+            className="nav-item"
+          >
+            <span class="material-symbols-outlined">
+              home
+            </span>
+          </Link>
           <Link
             to="/listening-writing"
             className="nav-item"
             onClick={() => setMenuOpen(false)}
           >
-            📖 Escuta & Escrita
+            <span class="material-symbols-outlined">
+              hearing
+            </span>
           </Link>
           <Link
             to="/listening-speaking"
             className="nav-item"
             onClick={() => setMenuOpen(false)}
           >
-            🎤 Escuta & Fala
+            <span class="material-symbols-outlined">
+              voice_selection
+            </span>
           </Link>
           <Link to="/talking" className="nav-item">
-            🗣️ Conversação IA
+            <span class="material-symbols-outlined">
+              robot_2
+            </span>
           </Link>
           <Link
             to="/ranking"
             className="nav-item"
             onClick={() => setMenuOpen(false)}
           >
-            🏆 Ranking
+            <span class="material-symbols-outlined">
+              trophy
+            </span>
           </Link>
 
-          {!user && (
+          {!user ? (
             <button
-              className="mobile-login-btn"
+              className="mobile-login-btn p-5"
               onClick={() => {
                 navigate("/auth");
                 setMenuOpen(false);
@@ -67,29 +77,11 @@ const Navbar = ({ voltarParaInicio }) => {
             >
               Entrar / Criar Conta
             </button>
-          )}
-        </div>
-      </div>
-
-      <div className="right-container">
-        {user ? (
-          <div className="right-container-logged">
-            <span>{user.email}</span>
-            <span className="material-symbols-outlined" onClick={handleLogout}>
-              logout
-            </span>
+          ) : (
+            <div className="right-container-logged">
+            <img className="nav-item user-img" src={user.photoURL} onClick={handleLogout}/>
           </div>
-        ) : (
-          <button
-            className="desktop-login-btn"
-            onClick={() => navigate("/auth")}
-          >
-            Entrar / Criar Conta
-          </button>
-        )}
-
-        <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
-          ☰
+          )}
         </div>
       </div>
     </div>
