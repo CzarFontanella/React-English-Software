@@ -6,6 +6,7 @@
   "private": "true",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd frontend && vite build",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd backend && npx nodemon server.js",
     "client": "cd frontend && npm run dev"
