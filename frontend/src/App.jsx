@@ -11,6 +11,7 @@ import TelaFinalSpeaking from "./Components/TelaFinal/TelaFinalSpeaking";
 import AuthPage from "./Components/AuthPage/AuthPage";
 import React from "react";
 import Talking from "./pages/Talking/Talking"; // ou o caminho correto para a page
+import UserView from "./pages/UserView";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/listening-speaking" element={<ListeningSpeaking />} />
             <Route path="/talking" element={<Talking />} />
             <Route path="/ranking" element={<RankingComponent />} />
+            <Route path="/user" element={<UserView />} />
             <Route path="/tela-final-writing" element={<TelaFinalWriting />} />
             <Route
               path="/tela-final-speaking"

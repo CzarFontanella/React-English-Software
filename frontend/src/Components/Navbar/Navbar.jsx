@@ -68,19 +68,23 @@ const Navbar = ({ voltarParaInicio }) => {
           </Link>
 
           {!user ? (
-            <button
-              className="mobile-login-btn p-5"
-              onClick={() => {
-                navigate("/auth");
-                setMenuOpen(false);
-              }}
+            <Link
+              to="/auth"
+              className="nav-item"
+              onClick={() => setMenuOpen(false)}
             >
-              Entrar / Criar Conta
-            </button>
+              <span class="material-symbols-outlined">
+                login
+              </span>
+            </Link>
           ) : (
-            <div className="right-container-logged">
-            <img className="nav-item user-img" src={user.photoURL} onClick={handleLogout}/>
-          </div>
+            <Link
+              to="/user"
+              className="nav-item"
+              onClick={() => setMenuOpen(false)}
+            >
+              <img className="nav-item user-img" src={user.photoURL} />
+            </Link>
           )}
         </div>
       </div>
