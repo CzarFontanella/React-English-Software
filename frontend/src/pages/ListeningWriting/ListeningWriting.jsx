@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
 import ListeningWritingComponent from "../../Components/Pratica/ListeningWriting/ListeningWritingComponent";
 import "./ListeningWriting.css";
+import PraticaButton from "../../Components/Pratica/Button/PraticeButton";
 
 const ListeningWriting = () => {
   const [praticando, setPraticando] = useState(false);
@@ -27,6 +28,10 @@ const ListeningWriting = () => {
   }, []);
 
   const iniciarPratica = () => {
+    if (!user) {
+      alert("❌ Você precisa estar logado para fazer as práticas.");
+      return;
+    }
     if (isActivated) {
       setPraticando(true);
     } else {
@@ -35,7 +40,10 @@ const ListeningWriting = () => {
   };
 
   const validarChaveDeAtivacao = async (activationKey) => {
-    if (!user) return { success: false, message: "Usuário não autenticado" };
+    if (!user) {
+      alert("❌ Você precisa estar logado para fazer as práticas.");
+      return;
+    }
 
     try {
       const response = await fetch(

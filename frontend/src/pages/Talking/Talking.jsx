@@ -5,6 +5,7 @@ import "./Talking.css";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import PraticaButton from "../../Components/Pratica/Button/PraticeButton";
 
 const Talking = () => {
   const [emConversacao, setEmConversacao] = useState(false);
@@ -30,6 +31,10 @@ const Talking = () => {
   }, []);
 
   const handleStartClick = () => {
+    if (!user) {
+      alert("❌ Você precisa estar logado para fazer as práticas.");
+      return;
+    }
     if (isActivated) {
       setEmConversacao(true);
     } else {
@@ -133,6 +138,7 @@ const Talking = () => {
             <br />- 🎯 Objetivo: Melhore sua escuta e fala treinando
             diariamente.
           </p>
+          
           <button className="start-button" onClick={handleStartClick}>
             Iniciar Conversa com a IA
           </button>

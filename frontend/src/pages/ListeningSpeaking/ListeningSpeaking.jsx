@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
+import PraticaButton from "../../Components/Pratica/Button/PraticeButton";
 
 const ListeningSpeaking = () => {
   const [praticando, setPraticando] = useState(false);
@@ -27,6 +28,11 @@ const ListeningSpeaking = () => {
   }, []);
 
   const handleStart = () => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("❌ Você precisa estar logado para fazer as práticas.");
+      return;
+    }
     if (isActivated) {
       setPraticando(true);
     } else {
