@@ -15,18 +15,18 @@
 }
 
 body {
-    height: 100vh;
+    background-color: var(--gray-900);
 }
 
 .App {
-    background-color: var(--gray-900);
-    min-height: 95vh;
+    min-height: 80vh;
 
     display: flex;
     flex-direction: column;
+    
 
     /* Mantem o tamanho da tela sempre acima do Nav */
-    padding-bottom: 5vh; 
+    padding-bottom: 5vh;
 }
 
 .App .container {

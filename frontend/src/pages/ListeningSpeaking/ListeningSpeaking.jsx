@@ -1,10 +1,10 @@
 import ListeningSpeakingComponent from "../../Components/Pratica/ListeningSpeaking/ListeningSpeakingComponent";
-import "./ListeningSpeaking.css";
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
 import PraticaButton from "../../Components/Pratica/Button/PraticeButton";
+import "../Practice.css";
 
 const ListeningSpeaking = () => {
   const [praticando, setPraticando] = useState(false);
@@ -69,7 +69,7 @@ const ListeningSpeaking = () => {
   };
 
   return (
-    <div className="listening-speaking-page">
+    <div className="practice-container">
       <ModalAuth
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
 import TalkingComponent from "../../Components/Pratica/Talking/TalkingComponent";
-import "./Talking.css";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import PraticaButton from "../../Components/Pratica/Button/PraticeButton";
+import "../Practice.css";
 
 const Talking = () => {
   const [emConversacao, setEmConversacao] = useState(false);
@@ -109,7 +109,7 @@ const Talking = () => {
   };
 
   return (
-    <div className="talking-page">
+    <div className="practice-container">
       <ModalAuth
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

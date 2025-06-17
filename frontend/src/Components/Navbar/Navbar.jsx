@@ -28,7 +28,7 @@ const Navbar = ({ voltarParaInicio }) => {
         <div className={`nav-links ${menuOpen ? "show" : ""}`}>
           <Link
             to="/"
-            className="nav-item"
+            className={`nav-item ${location.pathname === "/" ? "active" : ""}`}
           >
             <span className="material-symbols-outlined">
               home
@@ -36,30 +36,33 @@ const Navbar = ({ voltarParaInicio }) => {
           </Link>
           <Link
             to="/listening-writing"
-            className="nav-item"
+            className={`nav-item ${location.pathname === "/listening-writing" ? "active" : ""}`}
             onClick={() => setMenuOpen(false)}
           >
             <span className="material-symbols-outlined">
-              hearing
+              history_edu
             </span>
           </Link>
           <Link
             to="/listening-speaking"
-            className="nav-item"
+            className={`nav-item ${location.pathname === "/listening-speaking" ? "active" : ""}`}
             onClick={() => setMenuOpen(false)}
           >
             <span className="material-symbols-outlined">
               voice_selection
             </span>
           </Link>
-          <Link to="/talking" className="nav-item">
+          <Link 
+          to="/talking" 
+          className={`nav-item ${location.pathname === "/talking" ? "active" : ""}`}
+          >
             <span className="material-symbols-outlined">
               robot_2
             </span>
           </Link>
           <Link
             to="/ranking"
-            className="nav-item"
+            className={`nav-item ${location.pathname === "/ranking" ? "active" : ""}`}
             onClick={() => setMenuOpen(false)}
           >
             <span className="material-symbols-outlined">
@@ -70,7 +73,7 @@ const Navbar = ({ voltarParaInicio }) => {
           {!user ? (
             <Link
               to="/auth"
-              className="nav-item"
+              className={`nav-item ${location.pathname === "/auth" ? "active" : ""}`}
               onClick={() => setMenuOpen(false)}
             >
               <span className="material-symbols-outlined">
@@ -80,7 +83,7 @@ const Navbar = ({ voltarParaInicio }) => {
           ) : (
             <Link
               to="/user"
-              className="nav-item"
+              className={`nav-item ${location.pathname === "/user" ? "active" : ""}`}
               onClick={() => setMenuOpen(false)}
             >
               {!user.photoURL ? (

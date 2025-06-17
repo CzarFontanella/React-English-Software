@@ -47,6 +47,10 @@
   color: var(--roxo-codi);
 }
 
+.nav-links .active{
+  color: var(--roxo-codi);
+}
+
 .right-container {
   display: flex;
   align-items: center;
