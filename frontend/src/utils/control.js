@@ -42,11 +42,12 @@ export const checkAudioLimit = async (userId) => {
 
 // 🔹 Incrementa a contagem de áudios
 export const incrementAudioCount = async (userId) => {
-  try {
-    await api.post(`/api/text-to-speech/increment-audio-count/${userId}`); // ✅ Caminho corrigido
-  } catch (error) {
-    console.error("❌ Erro ao incrementar contagem no backend:", error.message);
-  }
+  // Utilizado para requisição ao servidor na porta 10000
+  // try {
+  //   await api.post(`/api/text-to-speech/increment-audio-count/${userId}`); // ✅ Caminho corrigido
+  // } catch (error) {
+  //   console.error("❌ Erro ao incrementar contagem no backend:", error.message);
+  // }
 
   try {
     const userRef = doc(db, "audioLimits", userId);
