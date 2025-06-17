@@ -69,4 +69,33 @@ router.post("/update-speaking-points", async (req, res) => {
   }
 });
 
+router.get("/userPoints/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    console.log(`🔍 Buscando pontuação do usuário: ${userId}`);
+
+    const doc = await db.collection("users").doc(userId).get();
+
+    if (!doc.exists) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    const userData = doc.data();
+
+    const userPoints = {
+      id: doc.id,
+      pointsSpeaking: userData.pointsSpeaking || 0,
+      pointsWriting: userData.pointsWriting || 0,
+      totalPoints:
+        (userData.pointsSpeaking || 0) + (userData.pointsWriting || 0),
+    };
+
+    return res.json(userPoints);
+
+  } catch (error) {
+    console.error("❌ Erro ao buscar pontuação do usuário:", error);
+    return res.status(500).json({ message: "Erro ao buscar usuário", error });
+  }
+});
+
 module.exports = router;

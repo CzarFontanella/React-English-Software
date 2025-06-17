@@ -22,5 +22,6 @@
 }
 
 .userview-img {
+    max-height: 15vh;
     border-radius: 50%;
 }

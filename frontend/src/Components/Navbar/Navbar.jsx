@@ -30,7 +30,7 @@ const Navbar = ({ voltarParaInicio }) => {
             to="/"
             className="nav-item"
           >
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
               home
             </span>
           </Link>
@@ -39,7 +39,7 @@ const Navbar = ({ voltarParaInicio }) => {
             className="nav-item"
             onClick={() => setMenuOpen(false)}
           >
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
               hearing
             </span>
           </Link>
@@ -48,12 +48,12 @@ const Navbar = ({ voltarParaInicio }) => {
             className="nav-item"
             onClick={() => setMenuOpen(false)}
           >
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
               voice_selection
             </span>
           </Link>
           <Link to="/talking" className="nav-item">
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
               robot_2
             </span>
           </Link>
@@ -62,7 +62,7 @@ const Navbar = ({ voltarParaInicio }) => {
             className="nav-item"
             onClick={() => setMenuOpen(false)}
           >
-            <span class="material-symbols-outlined">
+            <span className="material-symbols-outlined">
               trophy
             </span>
           </Link>
@@ -73,7 +73,7 @@ const Navbar = ({ voltarParaInicio }) => {
               className="nav-item"
               onClick={() => setMenuOpen(false)}
             >
-              <span class="material-symbols-outlined">
+              <span className="material-symbols-outlined">
                 login
               </span>
             </Link>
@@ -83,7 +83,14 @@ const Navbar = ({ voltarParaInicio }) => {
               className="nav-item"
               onClick={() => setMenuOpen(false)}
             >
-              <img className="nav-item user-img" src={user.photoURL} />
+              {!user.photoURL ? (
+                <span className="material-symbols-outlined">
+                  account_circle
+                </span>
+              ) : (
+                <img className="nav-item user-img" src={user.photoURL} />
+              )}
+
             </Link>
           )}
         </div>

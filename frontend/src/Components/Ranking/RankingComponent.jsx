@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./RankingComponent.css";
 import api from "../../utils/api";
+import { useRef } from "react";
 
 const RankingComponent = () => {
   const [ranking, setRanking] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // 🔹 Estado para capturar erros
+  const alreadyFetched = useRef(false);
 
   useEffect(() => {
     const fetchRanking = async () => {
+      if (alreadyFetched.current) return;
+      alreadyFetched.current = true;
+
       try {
         console.log("🔍 Buscando ranking...");
-        const response = await api.get("/api/points/ranking"); // ✅ Caminho corrigido
+        const response = await api.get("/api/points/ranking");
         setRanking(response.data);
       } catch (error) {
         console.error("❌ Erro ao buscar ranking:", error);
@@ -23,6 +28,7 @@ const RankingComponent = () => {
 
     fetchRanking();
   }, []);
+
 
   return (
     <div className="ranking-container">
@@ -38,23 +44,22 @@ const RankingComponent = () => {
           {ranking.map((user, index) => (
             <li key={user.id} className={`rank-${index + 1}`}>
               <span
-                className={`ranking-medal ${
-                  index === 0
+                className={`ranking-medal ${index === 0
                     ? "gold"
                     : index === 1
-                    ? "silver"
-                    : index === 2
-                    ? "bronze"
-                    : "default"
-                }`}
+                      ? "silver"
+                      : index === 2
+                        ? "bronze"
+                        : "default"
+                  }`}
               >
                 {index === 0
                   ? "🥇"
                   : index === 1
-                  ? "🥈"
-                  : index === 2
-                  ? "🥉"
-                  : "🏅"}{" "}
+                    ? "🥈"
+                    : index === 2
+                      ? "🥉"
+                      : "🏅"}{" "}
                 {index + 1}.
               </span>
               <span className="user-name">
