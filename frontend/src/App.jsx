@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar/Navbar";
-import Header from "./Components/Header/Header";
-import Footer from "./Components/Footer/Footer";
+import Header from "./Components/Header/Home";
 import ListeningWriting from "./pages/ListeningWriting/ListeningWriting";
 import ListeningSpeaking from "./pages/ListeningSpeaking/ListeningSpeaking";
 import RankingComponent from "./Components/Ranking/RankingComponent";
@@ -16,7 +15,7 @@ import UserView from "./pages/UserView";
 const App = () => {
   return (
     <Router>
-      <div className="App">
+      <div id="App" className="App">
         <main className="container">
           <Routes>
             <Route path="/" element={<Header />} />
@@ -26,15 +25,11 @@ const App = () => {
             <Route path="/ranking" element={<RankingComponent />} />
             <Route path="/user" element={<UserView />} />
             <Route path="/tela-final-writing" element={<TelaFinalWriting />} />
-            <Route
-              path="/tela-final-speaking"
-              element={<TelaFinalSpeaking />}
-            />
+            <Route path="/tela-final-speaking" element={<TelaFinalSpeaking />} />
             <Route path="/auth" element={<AuthPage />} />
           </Routes>
         </main>
         <Navbar />
-        {/* <Footer /> */}
       </div>
     </Router>
   );

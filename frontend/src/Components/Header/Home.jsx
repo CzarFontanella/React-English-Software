@@ -1,11 +1,11 @@
 import codiicon from "../../assets/codi_icon.png";
-import "./Header.css";
+import "./Home.css";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Header = ({ comecarPratica }) => {
+const Home = ({ comecarPratica }) => {
   return (
-    <header className="header-container">
+    <div className="header-container">
       <div className="logo">
         <img src={codiicon} alt="Logomarca Codi Academy" />
       </div>
@@ -45,8 +45,8 @@ const Header = ({ comecarPratica }) => {
           habilidades no idioma e subir no Ranking!
         </p>
       </div>
-    </header>
+    </div>
   );
 };
 
-export default Header;
+export default Home;

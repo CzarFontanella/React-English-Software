@@ -12,27 +12,69 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    background-color: var(--gray-900);
+    height: 100dvh;
+    background-color: #121212;
 }
 
 .App {
-    min-height: 80vh;
-
+    min-height: 95dvh;
+    background-color: var(--gray-900);
     display: flex;
     flex-direction: column;
-    
 
-    /* Mantem o tamanho da tela sempre acima do Nav */
-    padding-bottom: 5vh;
 }
 
 .App .container {
     flex: 1;
+    padding-inline: 5dvw;
+    padding-block: 5dvh;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    justify-content: center;
 }
 
 button {
     cursor: pointer;
+}
+
+.alert {
+  padding: 15px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+}
+
+.alert .alert-link {
+  font-weight: bold;
+}
+
+.alert > p,
+.alert > ul {
+  margin-bottom: 0;
+}
+
+.alert > p + p {
+  margin-top: 5px;
+}
+
+.alert-success .alert-link {
+  color: #2b542c;
+}
+
+.alert-danger {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+
+.alert-danger hr {
+  border-top-color: #e4b9c0;
+}
+
+.alert-danger .alert-link {
+  color: #843534;
 }

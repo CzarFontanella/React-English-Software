@@ -10,6 +10,7 @@ import { auth, provider } from "../../firebaseConfig";
 import "./AuthPage.css";
 import api from "../../utils/api";
 import React from "react";
+import GoogleButton from 'react-google-button';
 
 const AuthPage = () => {
   const [name, setName] = useState("");
@@ -90,14 +91,19 @@ const AuthPage = () => {
       await registerUserInDatabase(user, user.displayName);
       navigate("/");
     } catch (err) {
-      setError("Erro ao autenticar com Google.");
+      if (err.code === 'auth/popup-closed-by-user') {
+        setError("Você fechou a janela de login do Google.");
+      } else {
+        setError("Erro ao autenticar com Google.");
+      }
       console.error(err);
     }
     setLoading(false);
   };
 
+
   return (
-    <div className="auth-page">
+    <>
       <div className="auth-container">
         <h2>{isRegistering ? "Criar Conta" : "Entrar"}</h2>
         <form onSubmit={handleEmailAuth}>
@@ -127,15 +133,29 @@ const AuthPage = () => {
             {loading ? "Carregando..." : isRegistering ? "Cadastrar" : "Entrar"}
           </button>
         </form>
-        <button onClick={handleGoogleLogin} disabled={loading}>
-          {loading ? "Carregando..." : "Login com Google"}
-        </button>
+        {/* <button id="btn-google" onClick={handleGoogleLogin} disabled={loading}>
+        {loading ? "Carregando..." : "Login com Google"}
+      </button> */}
         <p onClick={() => setIsRegistering(!isRegistering)}>
           {isRegistering ? "Já tem conta? Entrar" : "Criar conta"}
         </p>
-        {error && <div className="error-message">{error}</div>}
+
+        <div id="btn-google">
+          <GoogleButton
+            type="light"
+            onClick={handleGoogleLogin}
+            disabled={loading}
+            label={loading ? "Carregando..." : "Login com Google"}
+          />
+        </div>
+
       </div>
-    </div>
+      {error && 
+      <div className="alert alert-danger">
+        {error}
+      </div>
+      }
+    </>
   );
 };
 

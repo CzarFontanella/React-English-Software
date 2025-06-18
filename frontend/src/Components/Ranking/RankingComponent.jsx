@@ -20,7 +20,7 @@ const RankingComponent = () => {
         setRanking(response.data);
       } catch (error) {
         console.error("❌ Erro ao buscar ranking:", error);
-        setError("Erro ao carregar ranking. Tente novamente.");
+        setError("Erro ao carregar ranking.");
       } finally {
         setLoading(false);
       }
@@ -31,12 +31,13 @@ const RankingComponent = () => {
 
 
   return (
+    <>
     <div className="ranking-container">
       <h2>🏆 Ranking dos Melhores Usuários</h2>
       {loading ? (
         <p>Carregando ranking...</p>
       ) : error ? (
-        <p className="error-message">{error}</p> // 🔹 Mostra erro caso aconteça
+        <p className="error-message">Desculpe...</p> // 🔹 Mostra erro caso aconteça
       ) : ranking.length === 0 ? (
         <p>Nenhum usuário no ranking ainda.</p>
       ) : (
@@ -74,6 +75,12 @@ const RankingComponent = () => {
         </ol>
       )}
     </div>
+    {error && 
+      <div className="alert alert-danger">
+        {error}
+      </div>
+      }
+    </>
   );
 };
 

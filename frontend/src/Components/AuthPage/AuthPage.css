@@ -1,43 +1,38 @@
-.auth-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: var(--gray-900);
-  font-family: "Montserrat", sans-serif;
-}
-
 .auth-container {
   background: rgb(216, 209, 209);
-  padding: 30px;
+  padding-block: 3dvh;
+  padding-inline: 5dvw;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 350px;
+  justify-items: center;
 }
 
-.auth-container h2 {
-  margin-bottom: 20px;
+.auth-container input,
+button,
+.alert,
+#btn-google {
+  margin-top: 2dvh;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .auth-container input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding-block: 2dvh;
+  padding-inline: 3dvw;
   border: 1px solid #ccc;
-  border-radius: 5px;
 }
 
 .auth-container button {
-  width: 100%;
-  padding: 10px;
+  min-width: 50%;
+  padding-block: 2dvh;
+  padding-inline: 3dvw;
   border: none;
   background-color: #9d53e2;
   color: white;
   font-size: 16px;
   cursor: pointer;
-  margin-bottom: 10px;
-  border-radius: 5px;
 }
 
 .auth-container button:disabled {
@@ -48,9 +43,5 @@
   font-family: "Montserrat", sans-serif;
   cursor: pointer;
   color: #007bff;
-}
-
-.error-message {
-  color: red;
-  margin-top: 10px;
+  margin-top: 2dvh;
 }

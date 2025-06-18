@@ -1,8 +1,5 @@
 /* Estilização do Container */
 .ranking-container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
   background: #ffffff;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
@@ -13,7 +10,8 @@
 /* Título */
 .ranking-container h2 {
   font-size: 26px;
-  margin-bottom: 20px;
+  margin-block: 3dvh;
+  margin-inline: 3dvw;
   color: #222;
   font-weight: bold;
 }
@@ -53,15 +51,18 @@
 
 /* Cores para as Medalhas do Top 3 */
 .gold {
-  color: #ffd700; /* 🥇 Ouro */
+  color: #ffd700;
+  /* 🥇 Ouro */
 }
 
 .silver {
-  color: #c0c0c0; /* 🥈 Prata */
+  color: #c0c0c0;
+  /* 🥈 Prata */
 }
 
 .bronze {
-  color: #cd7f32; /* 🥉 Bronze */
+  color: #cd7f32;
+  /* 🥉 Bronze */
 }
 
 /* Ajuste da Fonte para Usuários Além do Top 3 */
