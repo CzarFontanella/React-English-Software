@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar/Navbar";
-import Header from "./Components/Header/Home";
+import Home from "./Components/Home/Home";
 import ListeningWriting from "./pages/ListeningWriting/ListeningWriting";
 import ListeningSpeaking from "./pages/ListeningSpeaking/ListeningSpeaking";
 import RankingComponent from "./Components/Ranking/RankingComponent";
@@ -18,7 +18,7 @@ const App = () => {
       <div id="App" className="App">
         <main className="container">
           <Routes>
-            <Route path="/" element={<Header />} />
+            <Route path="/" element={<Home />} />
             <Route path="/listening-writing" element={<ListeningWriting />} />
             <Route path="/listening-speaking" element={<ListeningSpeaking />} />
             <Route path="/talking" element={<Talking />} />

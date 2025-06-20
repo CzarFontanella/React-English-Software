@@ -10,7 +10,7 @@
 .nav-container {
   position: fixed;
   bottom: 0;
-  height: 5vh;
+  height: 6dvh;
   width: 100vw;
   display: flex;
   align-items: center;
@@ -19,6 +19,7 @@
   background-color: #121212;
   border-top: 1px solid var(--gray-950);
   flex-wrap: wrap;
+  align-content: center;
 }
 
 .center-container {
@@ -47,7 +48,7 @@
   color: var(--roxo-codi);
 }
 
-.nav-links .active{
+.nav-links .active {
   color: var(--roxo-codi);
 }
 

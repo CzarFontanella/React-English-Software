@@ -142,6 +142,7 @@ const AuthPage = () => {
 
         <div id="btn-google">
           <GoogleButton
+            shape="pill"
             type="light"
             onClick={handleGoogleLogin}
             disabled={loading}
