@@ -72,7 +72,7 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     const canGenerate = await checkAudioLimit(user.uid);
 
     if (canGenerate) {
-      if (inputText.toLocaleLowerCase() === text.toLocaleLowerCase()) {
+      if (normalizeText(inputText) === normalizeText(text)) {
         setProgresso((prevProgresso) => Math.min(prevProgresso + 10, 100));
         setAcertos((prevAcertos) => (prevAcertos || 0) + 1);
         await incrementAudioCount(user.uid);
@@ -121,7 +121,6 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     }
   };
 
-  // Kkkkkkk mano sem logar vc nn vai estudar nao parceiro
   const handleLogin = async () => {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
@@ -165,13 +164,15 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
         </div>
       )}
 
-      <div className="input-pratica">
-        <textarea
-          placeholder="Digite o que você ouviu: "
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-        />
-      </div>
+      {plays > 0 && (
+        <div className="input-pratica">
+          <textarea
+            placeholder="Digite o que você ouviu: "
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+          />
+        </div>
+      )}
 
       <div className="footer-pratica">
         {handleStartClick && plays > 0 && (
@@ -189,5 +190,13 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     </div>
   );
 };
+
+function normalizeText(str) {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")   // Remove acentos
+    .replace(/[^a-z0-9]/gi, "")        // Remove caracteres especiais e espaços
+    .toLowerCase();                    // Converte para minúsculo
+}
 
 export default ConteudoPratica;

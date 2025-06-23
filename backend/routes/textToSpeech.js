@@ -75,36 +75,58 @@ router.get("/check-audio-limit/:userId", async (req, res) => {
 });
 
 // 🔹 Rota para incrementar a contagem de áudios gerados
-router.post("/increment-audio-count/:userId", async (req, res) => {
+router.post("/try-generate-audio/:userId", async (req, res) => {
   const { userId } = req.params;
+  const { text } = req.body;
+  const today = new Date().toISOString().split("T")[0];
+
+  if (!text) {
+    return res.status(400).json({ error: "Texto não fornecido!" });
+  }
 
   try {
-    console.log(`🔹 Incrementando áudio para o usuário: ${userId}`); // Log para debug
-
     const userRef = db.collection("audioLimits").doc(userId);
     const userDoc = await userRef.get();
-    const today = new Date().toISOString().split("T")[0];
+
+    let canGenerate = true;
+    let newCount = 1;
 
     if (userDoc.exists) {
-      const { audioCount, lastAccessed } = userDoc.data();
-      const newCount = lastAccessed === today ? audioCount + 1 : 1;
-
-      await userRef.set(
-        { audioCount: newCount, lastAccessed: today },
-        { merge: true }
-      );
-    } else {
-      await userRef.set({ audioCount: 1, lastAccessed: today });
+      const { audioCount = 0, lastAccessed } = userDoc.data();
+      if (lastAccessed === today && audioCount >= 10) {
+        canGenerate = false;
+      } else {
+        newCount = lastAccessed === today ? audioCount + 1 : 1;
+      }
     }
 
-    return res.json({ success: true });
+    if (!canGenerate) {
+      return res.status(403).json({ error: "Limite diário atingido" });
+    }
+
+    await userRef.set({ audioCount: newCount, lastAccessed: today }, { merge: true });
+
+    const gtts = new gTTS(text, "en");
+    const filePath = path.join(tempDir, `audio_${Date.now()}.mp3`);
+
+    gtts.save(filePath, (err) => {
+      if (err) {
+        console.error("❌ Erro ao salvar áudio:", err);
+        return res.status(500).json({ error: "Erro ao gerar áudio!" });
+      }
+
+      res.sendFile(filePath, () => {
+        fs.unlink(filePath, (unlinkErr) => {
+          if (unlinkErr) {
+            console.error("⚠️ Erro ao remover arquivo temporário:", unlinkErr);
+          }
+        });
+      });
+    });
   } catch (error) {
-    console.error("❌ Erro ao incrementar contagem:", error);
-    return res
-      .status(500)
-      .json({ error: "Erro interno no servidor", details: error.message });
+    console.error("❌ Erro ao processar solicitação de áudio:", error);
+    return res.status(500).json({ error: "Erro interno no servidor" });
   }
 });
-
 
 module.exports = router;
