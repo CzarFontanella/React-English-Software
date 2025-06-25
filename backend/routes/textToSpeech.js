@@ -75,7 +75,7 @@ router.get("/check-audio-limit/:userId", async (req, res) => {
 });
 
 // 🔹 Rota para incrementar a contagem de áudios gerados
-router.post("/try-generate-audio/:userId", async (req, res) => {
+router.post("/increment-audio-count/:userId", async (req, res) => {
   const { userId } = req.params;
   const { text } = req.body;
   const today = new Date().toISOString().split("T")[0];

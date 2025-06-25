@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useConteudoPratica } from "../../Hooks/UseConteudoPratica";
 import Modal from "../../Modal/ModalWriting";
-import "./ConteudoPratica.css";
 import {
   getAuth,
   onAuthStateChanged,
@@ -13,7 +12,8 @@ import {
   handlePlayAudio,
   incrementAudioCount,
 } from "../../../utils/control"; // Funções de controle com firebase
-import React from "react";
+import "../../../pages/Practice.css"
+import "./ConteudoPratica.css";
 
 const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
   const { audioUrl, audioRef, text, gerarAudio } = useConteudoPratica();
@@ -45,6 +45,10 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     }
   }, [audioUrl]);
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   const handleStartClick = async () => {
     if (user) {
       const canGenerate = await checkAudioLimit(user.uid);
@@ -64,10 +68,6 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     }
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
   const handleContinueClick = async () => {
     const canGenerate = await checkAudioLimit(user.uid);
 
@@ -81,7 +81,7 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
         setAttempts(0);
         setModalMessage("Parabéns! Você acertou.");
 
-        if (audiosGerados + 1 === 10) {
+        if (audiosGerados >= 10) {
           finalizarPratica((acertos || 0) + 1);
           setModalMessage("Você finalizou a prática diária de 10 áudios!");
           setShowModal(true);
@@ -110,7 +110,7 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
       setInputText("");
       setAttempts(0);
 
-      if (audiosGerados + 1 === 10) {
+      if (audiosGerados >= 10) {
         finalizarPratica(acertos);
       } else {
         await gerarAudio();

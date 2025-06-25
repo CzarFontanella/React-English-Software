@@ -132,23 +132,3 @@
     width: 60%;
   }
 }
-
-@media (max-width: 480px) {
-  .container-pratica .input-pratica textarea {
-    height: 8rem;
-    font-size: 12px;
-    width: 16rem;
-  }
-
-  .container-pratica .footer-pratica {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .container-pratica .footer-pratica button {
-    width: 60%;
-    color: var(--gray-400);
-  }
-}

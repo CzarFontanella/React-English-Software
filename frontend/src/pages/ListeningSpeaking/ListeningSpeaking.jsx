@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
-import PraticaButton from "../../Components/Pratica/Button/PraticeButton";
 import "../Practice.css";
 
 const ListeningSpeaking = () => {

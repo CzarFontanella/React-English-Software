@@ -16,11 +16,11 @@
 .body-text {
     font-size: 16px;
     line-height: 1.6;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .start-button {
-    margin-top: 3vh;
+    margin-top: 3dvh;
     font-size: 16px;
     font-weight: 600;
     padding: 16px;
@@ -35,27 +35,3 @@
 .start-button:hover {
     transform: scale(1.05);
 }
-
-/* @media (max-width: 768px) {
-    .body-text {
-        font-size: 15px;
-        line-height: 1.4;
-        padding: 0 1rem;
-    }
-
-    .start-button {
-        font-size: 15px;
-        padding: 12px 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .body-text {
-        font-size: 14px;
-        padding: 0 0.5rem;
-    }
-
-    .start-button {
-        font-size: 14px;
-    }
-} */

@@ -4,7 +4,6 @@ import TalkingComponent from "../../Components/Pratica/Talking/TalkingComponent"
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import PraticaButton from "../../Components/Pratica/Button/PraticeButton";
 import "../Practice.css";
 
 const Talking = () => {

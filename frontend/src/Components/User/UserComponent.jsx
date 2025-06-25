@@ -76,12 +76,12 @@ const UserComponent = () => {
         <p>{error}</p>
       ) : (
         <div id="div-pontos">
-          <h2>Pontos de Writing: {pontuacao.pointsWriting || 0}</h2>
-          <h2>Pontos de Speaking: {pontuacao.pointsSpeaking || 0}</h2>
-          <h2>Total de Pontos: {pontuacao.totalPoints || 0}</h2>
+          <h3>Pontos de Writing: {pontuacao.pointsWriting || 0}</h3>
+          <h3>Pontos de Speaking: {pontuacao.pointsSpeaking || 0}</h3>
+          <h3>Total de Pontos: {pontuacao.totalPoints || 0}</h3>
         </div>
       )}
-      <button onClick={handleLogout}>Sair</button>
+      <button className="logout-button" onClick={handleLogout}>Sair</button>
     </div>
   );
 };

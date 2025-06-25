@@ -11,12 +11,9 @@
     padding-block: 5vh;
     padding-inline: 5vw;
 
-    margin-block: 5vh;
-    margin-inline: 5vw;
     background: #ffffff;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
-    text-align: center;
     border: 2px solid #f1f1f1;
     max-width: 600px;
 }
@@ -24,4 +21,18 @@
 .userview-img {
     max-height: 15vh;
     border-radius: 50%;
+}
+
+.logout-button {
+    margin-top: 3vh;
+    font-size: 16px;
+    font-weight: 600;
+    width: 30%;
+    padding: 16px;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #a243d2, #ff0080);
+    transition: transform 0.3s ease-in-out;
 }

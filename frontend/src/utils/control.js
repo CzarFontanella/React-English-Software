@@ -21,28 +21,27 @@ export const checkAudioLimit = async (userId) => {
     );
   }
 
-  try {
-    const userRef = doc(db, "audioLimits", userId);
-    const userDoc = await getDoc(userRef);
-    const now = new Date().toISOString();
-    const today = formatDate(now);
+  // try {
+  //   const userRef = doc(db, "audioLimits", userId);
+  //   const userDoc = await getDoc(userRef);
+  //   const now = new Date().toISOString();
+  //   const today = formatDate(now);
 
-    if (userDoc.exists()) {
-      const data = userDoc.data();
-      return data.lastAccessed === today ? data.audioCount < 10 : true;
-    } else {
-      await setDoc(userRef, { audioCount: 0, lastAccessed: today });
-      return true;
-    }
-  } catch (error) {
-    console.error("❌ Erro ao acessar Firestore:", error.message);
-    return false;
-  }
+  //   if (userDoc.exists()) {
+  //     const data = userDoc.data();
+  //     return data.lastAccessed === today ? data.audioCount < 10 : true;
+  //   } else {
+  //     await setDoc(userRef, { audioCount: 0, lastAccessed: today });
+  //     return true;
+  //   }
+  // } catch (error) {
+  //   console.error("❌ Erro ao acessar Firestore:", error.message);
+  //   return false;
+  // }
 };
 
 // 🔹 Incrementa a contagem de áudios
 export const incrementAudioCount = async (userId) => {
-  // Utilizado para requisição ao servidor na porta 10000
   // try {
   //   await api.post(`/api/text-to-speech/increment-audio-count/${userId}`); // ✅ Caminho corrigido
   // } catch (error) {

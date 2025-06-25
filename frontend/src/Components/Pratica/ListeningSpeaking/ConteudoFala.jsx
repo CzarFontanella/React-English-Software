@@ -1,51 +1,148 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { auth } from "../../../firebaseConfig";
+import { checkAudioLimit, incrementAudioCount, handlePlayAudio } from "../../../utils/control";
+import { useConteudoPratica } from "../../Hooks/UseConteudoPratica";
+import "../../../pages/Practice.css"
 import "./ConteudoFala.css";
 
-const ConteudoFala = ({ setProgresso }) => {
+const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
+  const { audioUrl, audioRef, gerarAudio, text } = useConteudoPratica();
+  const [transcricao, setTranscricao] = useState("");
   const [gravando, setGravando] = useState(false);
-  const [resultado, setResultado] = useState("");
-  const [feedback, setFeedback] = useState("");
+  const [tentativas, setTentativas] = useState(0);
+  const [audiosGerados, setAudiosGerados] = useState(0);
 
-  const iniciarGravacao = () => {
+  useEffect(() => {
+    if (auth.currentUser) gerarAudio();
+  }, []);
+
+  useEffect(() => {
+    if (audioUrl && audioRef.current) {
+      audioRef.current.load();
+      audioRef.current.play().catch((e) => {
+        console.log("Erro ao reproduzir o áudio:", e);
+      });
+    }
+  }, [audioUrl]);
+
+  const iniciarReconhecimentoVoz = async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Você precisa estar logado para praticar.");
+      return;
+    }
+
+    const canGenerate = await checkAudioLimit(user.uid);
+    if (!canGenerate) {
+      alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
+      finalizarPratica();
+      return;
+    }
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Seu navegador não suporta reconhecimento de voz.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
     setGravando(true);
-    setFeedback("Gravando... Fale agora!");
-    // Simulando a captura de áudio
-    setTimeout(() => {
-      processarFala("Hello world"); // Simula reconhecimento de fala
-    }, 3000);
+
+    recognition.onresult = async (event) => {
+      const textoFalado = event.results[0][0].transcript;
+      setTranscricao(textoFalado);
+      recognition.stop();
+      setGravando(false);
+
+      const respostaUsuario = normalizeText(textoFalado);
+      const respostaCorreta = normalizeText(text);
+
+      if (respostaUsuario === respostaCorreta) {
+        alert("✅ Correto!");
+        await incrementAudioCount(user.uid);
+        setProgresso((prev) => prev + 10);
+        setAcertos((prev) => prev + 1);
+        setTentativas(0);
+        setTranscricao("");
+
+        if (audiosGerados >= 10) {
+          finalizarPratica((acertos || 0) + 1);
+          setModalMessage("Você finalizou a prática diária de 10 áudios!");
+          setShowModal(true);
+          setShowDoneBtn(true);
+        } else {
+          setAudiosGerados((prev) => prev + 1);
+          await gerarAudio();
+        }
+      } else {
+        setTentativas((prev) => prev + 1);
+        alert("❌ Tente novamente.");
+      }
+    };
+
+    recognition.onerror = () => {
+      setGravando(false);
+      alert("Erro no reconhecimento de voz.");
+    };
   };
 
-  const processarFala = (falaReconhecida) => {
-    setGravando(false);
-    setResultado(falaReconhecida);
+  const pularFrase = async () => {
+    const user = auth.currentUser;
+    const canGenerate = await checkAudioLimit(user.uid);
 
-    // Simulação de correção da IA
-    const respostaCorreta = "Hello world"; // Frase esperada
-    if (falaReconhecida.toLowerCase() === respostaCorreta.toLowerCase()) {
-      setFeedback("✅ Ótimo! Pronúncia correta.");
-      setProgresso((prev) => Math.min(prev + 10, 100)); // Aumenta o progresso
+    if (canGenerate) {
+      await incrementAudioCount(user.uid);
+      setTranscricao("");
+      setTentativas(0);
+      setAudiosGerados((prev) => prev + 1);
+
+      if (audiosGerados >= 10) {
+        finalizarPratica(acertos);
+      } else {
+        await gerarAudio();
+      }
     } else {
-      setFeedback("❌ Tente novamente! Pronúncia incorreta.");
+      alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
+      finalizarPratica();
     }
   };
 
   return (
-    <div className="conteudo-fala-container">
-      <h3>Repita a frase:</h3>
-      <p className="frase">"Hello world"</p>
-
-      <button
-        className="botao-falar"
-        onClick={iniciarGravacao}
-        disabled={gravando}
-      >
-        {gravando ? "Gravando..." : "Falar Agora 🎤"}
+    <div className="conteudo-fala">
+      <p>Reproduza o áudio e fale o que ouviu:</p>
+      {audioUrl ? (
+        <audio controls ref={audioRef}>
+          <source src={audioUrl} type="audio/mpeg" />
+          Seu navegador não suporta o elemento de áudio.
+        </audio>
+      ) : (
+        <p>Carregando áudio...</p>
+      )}
+      <button className="botao-falar" onClick={iniciarReconhecimentoVoz} disabled={gravando}>
+        {gravando ? "🎙️ Ouvindo..." : "🎤 Falar"}
       </button>
-
-      {resultado && <p className="resultado">Você disse: "{resultado}"</p>}
-      {feedback && <p className="feedback">{feedback}</p>}
+      {tentativas >= 3 && (
+        <button onClick={pularFrase}>⏭️ Pular</button>
+      )}
+      {transcricao && <p className="feedback">🗣️ Você disse: {transcricao}</p>}
     </div>
   );
 };
+
+function normalizeText(str) {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")   // Remove acentos
+    .replace(/[^a-z0-9]/gi, "")        // Remove caracteres especiais e espaços
+    .toLowerCase();                    // Converte para minúsculo
+}
 
 export default ConteudoFala;

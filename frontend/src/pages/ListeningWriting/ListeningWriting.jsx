@@ -3,7 +3,6 @@ import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
 import ListeningWritingComponent from "../../Components/Pratica/ListeningWriting/ListeningWritingComponent";
-import PraticaButton from "../../Components/Pratica/Button/PraticeButton";
 import "../Practice.css";
 
 const ListeningWriting = () => {
