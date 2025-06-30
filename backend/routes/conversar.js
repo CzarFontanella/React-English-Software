@@ -2,12 +2,12 @@ const express = require("express");
 const axios = require("axios");
 const router = express.Router();
 
-// Changed from VITE_ prefix to regular environment variables
+// Variaveis de Ambiente
 const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
 const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID;
 const openaiApiKey = process.env.OPENAI_API_KEY;
 
-// Added debug logs to help troubleshoot environment variables
+// Logs para troubleshooting das variaveis de ambiente
 console.log("Environment variables check in conversar.js:");
 console.log("- OpenAI API Key:", openaiApiKey ? "defined" : "undefined");
 console.log(
