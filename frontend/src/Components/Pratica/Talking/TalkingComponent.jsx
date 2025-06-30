@@ -99,7 +99,6 @@ const TalkingComponent = ({ setPointsSpeaking, finalizarPratica }) => {
   const conversarComIA = async (mensagem) => {
     try {
       const API_URL = import.meta.env.VITE_API_BASE_URL;
-      console.log("🚀 API_URL:", API_URL);
       const resposta = await fetch(
         `${API_URL}/api/conversar`,
         {

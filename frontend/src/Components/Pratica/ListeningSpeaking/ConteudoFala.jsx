@@ -12,18 +12,36 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
   const [tentativas, setTentativas] = useState(0);
   const [audiosGerados, setAudiosGerados] = useState(0);
 
-  useEffect(() => {
-    if (auth.currentUser) gerarAudio();
-  }, []);
+useEffect(() => {
+  const gerarPrimeiroAudio = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
 
-  useEffect(() => {
-    if (audioUrl && audioRef.current) {
-      audioRef.current.load();
-      audioRef.current.play().catch((e) => {
-        console.log("Erro ao reproduzir o áudio:", e);
-      });
+    const canGenerate = await checkAudioLimit(user.uid);
+    if (!canGenerate) {
+      alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
+      finalizarPratica();
+      return;
     }
-  }, [audioUrl]);
+
+    await incrementAudioCount(user.uid); // ✅ incrementa ao gerar o primeiro áudio
+    await gerarAudio();
+    setAudiosGerados(1); // ✅ controla o estado corretamente
+  };
+
+  gerarPrimeiroAudio();
+}, []);
+
+
+useEffect(() => {
+  if (audioUrl && audioRef.current) {
+    audioRef.current.pause();
+    audioRef.current.load();
+    audioRef.current.play().catch((e) => {
+      console.log("Erro ao reproduzir o áudio:", e);
+    });
+  }
+}, [audioUrl]);
 
   const iniciarReconhecimentoVoz = async () => {
     const user = auth.currentUser;
@@ -73,12 +91,15 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
         setTentativas(0);
         setTranscricao("");
 
-        if (audiosGerados >= 10) {
+        if (audiosGerados + 1 >= 10) {
+          await incrementAudioCount(user.uid);
+          setAudiosGerados((prev) => prev + 1);
           finalizarPratica((acertos || 0) + 1);
           setModalMessage("Você finalizou a prática diária de 10 áudios!");
           setShowModal(true);
           setShowDoneBtn(true);
         } else {
+          await incrementAudioCount(user.uid);
           setAudiosGerados((prev) => prev + 1);
           await gerarAudio();
         }
@@ -104,11 +125,16 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
       setTentativas(0);
       setAudiosGerados((prev) => prev + 1);
 
-      if (audiosGerados >= 10) {
+      if (audiosGerados + 1 >= 10) {
+        await incrementAudioCount(user.uid);
+        setAudiosGerados((prev) => prev + 1);
         finalizarPratica(acertos);
       } else {
+        await incrementAudioCount(user.uid);
+        setAudiosGerados((prev) => prev + 1);
         await gerarAudio();
       }
+
     } else {
       alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
       finalizarPratica();

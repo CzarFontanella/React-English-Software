@@ -30,11 +30,28 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
 
   useEffect(() => {
     const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
+
+      // Quando o usuário estiver logado, tenta carregar o primeiro áudio
+      if (user) {
+        const canGenerate = await checkAudioLimit(user.uid);
+        if (canGenerate) {
+          setPlays((prevPlays) => prevPlays + 1);
+          setIsLoading(true);
+          await handlePlayAudio(user.uid, gerarAudio);
+          setIsLoading(false);
+        } else {
+          setModalMessage("Você atingiu o limite de 10 áudios por dia.");
+          setShowDoneBtn(true);
+          setShowModal(true);
+        }
+      }
     });
+
     return () => unsubscribe();
   }, []);
+
 
   useEffect(() => {
     if (audioUrl && audioRef.current) {
@@ -157,22 +174,17 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
           Seu navegador não suporta o elemento de áudio.
         </audio>
       ) : (
-        <div className="start-pratica">
-          <button className="btn-start" onClick={handleStartClick}>
-            {isLoading ? <div className="loading-animation"></div> : "Começar"}
-          </button>
-        </div>
+        <p>Carregando áudio...</p>
       )}
 
-      {plays > 0 && (
-        <div className="input-pratica">
-          <textarea
-            placeholder="Digite o que você ouviu: "
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-          />
-        </div>
-      )}
+
+      <div className="input-pratica">
+        <textarea
+          placeholder="Digite o que você ouviu: "
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+        />
+      </div>
 
       <div className="footer-pratica">
         {handleStartClick && plays > 0 && (

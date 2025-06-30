@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
 import ListeningWritingComponent from "../../Components/Pratica/ListeningWriting/ListeningWritingComponent";
 import "../Practice.css";
+import { checkAudioLimit } from "../../utils/control";
 
 const ListeningWriting = () => {
   const [praticando, setPraticando] = useState(false);
@@ -26,16 +27,24 @@ const ListeningWriting = () => {
     return () => unsubscribe();
   }, []);
 
-  const iniciarPratica = () => {
+  const iniciarPratica = async () => {
     if (!user) {
       alert("❌ Você precisa estar logado para fazer as práticas.");
       return;
     }
-    if (isActivated) {
-      setPraticando(true);
-    } else {
+
+    if (!isActivated) {
       setModalOpen(true);
+      return;
     }
+
+    const podeGerar = await checkAudioLimit(user.uid);
+    if (!podeGerar) {
+      alert("❌ Você atingiu o limite diário de geração de áudios.");
+      return;
+    }
+
+    setPraticando(true);
   };
 
   const validarChaveDeAtivacao = async (activationKey) => {

@@ -10,6 +10,4 @@ const api = axios.create({
   },
 });
 
-console.log("🔥 API rodando em:", API_BASE_URL); // Para verificar qual URL está sendo usada
-
 export default api;

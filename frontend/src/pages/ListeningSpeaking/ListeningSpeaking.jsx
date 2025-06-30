@@ -4,6 +4,7 @@ import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
 import "../Practice.css";
+import { checkAudioLimit } from "../../utils/control";
 
 const ListeningSpeaking = () => {
   const [praticando, setPraticando] = useState(false);
@@ -26,18 +27,27 @@ const ListeningSpeaking = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleStart = () => {
-    const user = auth.currentUser;
-    if (!user) {
-      alert("❌ Você precisa estar logado para fazer as práticas.");
-      return;
-    }
-    if (isActivated) {
-      setPraticando(true);
-    } else {
-      setModalOpen(true);
-    }
-  };
+const handleStart = async () => {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("❌ Você precisa estar logado para fazer as práticas.");
+    return;
+  }
+
+  if (!isActivated) {
+    setModalOpen(true);
+    return;
+  }
+
+  const podeGerar = await checkAudioLimit(user.uid);
+  if (!podeGerar) {
+    alert("❌ Você atingiu o limite diário de geração de áudios.");
+    return;
+  }
+
+  setPraticando(true);
+};
+
 
   const validarChaveDeAtivacao = async (activationKey) => {
     if (!user) return { success: false, message: "Usuário não autenticado" };
