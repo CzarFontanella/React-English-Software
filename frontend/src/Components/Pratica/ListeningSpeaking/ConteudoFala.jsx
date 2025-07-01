@@ -103,14 +103,12 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
         setTranscricao("");
 
         if (audiosGerados + 1 >= 10) {
-          await incrementAudioCount(user.uid);
           setAudiosGerados((prev) => prev + 1);
           finalizarPratica((acertos || 0) + 1);
           setModalMessage("Você finalizou a prática diária de 10 áudios!");
           setShowModal(true);
           setShowDoneBtn(true);
         } else {
-          await incrementAudioCount(user.uid);
           setAudiosGerados((prev) => prev + 1);
           await gerarAudio();
         }
@@ -137,15 +135,10 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
       setAudiosGerados((prev) => prev + 1);
 
       if (audiosGerados + 1 >= 10) {
-        await incrementAudioCount(user.uid);
-        setAudiosGerados((prev) => prev + 1);
         finalizarPratica(acertos);
       } else {
-        await incrementAudioCount(user.uid);
-        setAudiosGerados((prev) => prev + 1);
         await gerarAudio();
       }
-
     } else {
       alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
       finalizarPratica();
