@@ -11,37 +11,48 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
   const [gravando, setGravando] = useState(false);
   const [tentativas, setTentativas] = useState(0);
   const [audiosGerados, setAudiosGerados] = useState(0);
+  const [user, setUser] = useState(null);
 
-useEffect(() => {
-  const gerarPrimeiroAudio = async () => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const canGenerate = await checkAudioLimit(user.uid);
-    if (!canGenerate) {
-      alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
-      finalizarPratica();
-      return;
-    }
-
-    await incrementAudioCount(user.uid); // ✅ incrementa ao gerar o primeiro áudio
-    await gerarAudio();
-    setAudiosGerados(1); // ✅ controla o estado corretamente
-  };
-
-  gerarPrimeiroAudio();
-}, []);
-
-
-useEffect(() => {
-  if (audioUrl && audioRef.current) {
-    audioRef.current.pause();
-    audioRef.current.load();
-    audioRef.current.play().catch((e) => {
-      console.log("Erro ao reproduzir o áudio:", e);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
+      }
     });
-  }
-}, [audioUrl]);
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const gerarPrimeiroAudio = async () => {
+      if (!user) return;
+
+      const canGenerate = await checkAudioLimit(user.uid);
+      if (!canGenerate) {
+        alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
+        finalizarPratica();
+        return;
+      }
+
+      await incrementAudioCount(user.uid);
+      await gerarAudio();
+      setAudiosGerados(1);
+    };
+
+    gerarPrimeiroAudio();
+  }, [user]); // só roda quando user estiver definido
+
+
+
+  useEffect(() => {
+    if (audioUrl && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.load();
+      audioRef.current.play().catch((e) => {
+        console.log("Erro ao reproduzir o áudio:", e);
+      });
+    }
+  }, [audioUrl]);
 
   const iniciarReconhecimentoVoz = async () => {
     const user = auth.currentUser;
