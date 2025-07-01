@@ -4,8 +4,6 @@ import Modal from "../../Modal/ModalWriting";
 import {
   getAuth,
   onAuthStateChanged,
-  signInWithPopup,
-  GoogleAuthProvider,
 } from "firebase/auth";
 import {
   checkAudioLimit,
@@ -66,25 +64,6 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     setShowModal(false);
   };
 
-  const handleStartClick = async () => {
-    if (user) {
-      const canGenerate = await checkAudioLimit(user.uid);
-
-      if (canGenerate) {
-        setPlays((prevPlays) => prevPlays + 1);
-        setIsLoading(true);
-        await handlePlayAudio(user.uid, gerarAudio);
-        setIsLoading(false);
-      } else {
-        setModalMessage("Você atingiu o limite de 10 áudios por dia.");
-        setShowDoneBtn(true);
-        setShowModal(true);
-      }
-    } else {
-      handleLogin();
-    }
-  };
-
   const handleContinueClick = async () => {
     const canGenerate = await checkAudioLimit(user.uid);
 
@@ -138,17 +117,6 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     }
   };
 
-  const handleLogin = async () => {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (e) {
-      console.log("Erro ao fazer login:", e);
-    }
-  };
-
   return (
     <div className="container-pratica">
       {showModal && (
@@ -161,8 +129,6 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
         />
       )}
       <div className="texto-pratica">
-        {/* <img src={waves} alt="" /> */}
-        {/* <div className="wave-animation"></div> */}
         <p>
           Reproduza o <span>áudio</span> para ouvir sua <span>frase.</span>
         </p>
@@ -187,7 +153,7 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
       </div>
 
       <div className="footer-pratica">
-        {handleStartClick && plays > 0 && (
+        {plays > 0 && (
           <button className="btn-continue" onClick={handleContinueClick}>
             Continuar
           </button>
