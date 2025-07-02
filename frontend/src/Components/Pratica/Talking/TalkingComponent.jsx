@@ -58,7 +58,7 @@ const TalkingComponent = ({ setPointsSpeaking, finalizarPratica }) => {
       const data = await response.json();
       console.log("✅ Pontuação salva automaticamente:", data.pointsSpeaking);
     } catch (err) {
-      console.error("❌ Erro ao salvar pontos automaticamente:", err);
+      if (import.meta.env.DEV) console.error("❌ Erro ao salvar pontos automaticamente:", err);
     }
   };
 
@@ -127,7 +127,7 @@ const TalkingComponent = ({ setPointsSpeaking, finalizarPratica }) => {
         console.warn("⚠️ audioBase64 não recebido:", data);
       }
     } catch (err) {
-      console.error("Erro na conversa com IA:", err);
+      if (import.meta.env.DEV) console.error("Erro na conversa com IA:", err);
       setRespostaIA("Erro ao responder.");
     } finally {
       setLoading(false);

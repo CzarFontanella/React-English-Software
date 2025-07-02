@@ -35,7 +35,7 @@ const ListeningWritingComponent = () => {
         }
       );
     } catch (err) {
-      console.error("❌ Erro ao salvar pontos:", err);
+      if (import.meta.env.DEV) console.error("❌ Erro ao salvar pontos:", err);
     }
   };
 

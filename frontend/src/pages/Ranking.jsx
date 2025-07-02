@@ -1,8 +1,7 @@
 import React from "react";
-import Ranking from "../Components/Ranking/RankingComponent";
+import RankingComponent from "../Components/Ranking/RankingComponent";
 
-const Ranking = () => {
-  return <RankingComponent />;
-};
+
+const Ranking = React.memo(() => <RankingComponent />);
 
 export default Ranking;

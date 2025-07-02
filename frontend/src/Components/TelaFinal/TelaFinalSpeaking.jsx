@@ -7,7 +7,7 @@ const TelaFinalSpeaking = () => {
   const location = useLocation();
   const pointsSpeaking = location.state?.pointsSpeaking ?? "Ainda não concluiu";
 
-  console.log("📌 Tela Final Speaking - pontosSpeaking:", pointsSpeaking);
+  if (import.meta.env.DEV) console.log("📌 Tela Final Speaking - pontosSpeaking:", pointsSpeaking);
 
   return (
     <div className="container-final">

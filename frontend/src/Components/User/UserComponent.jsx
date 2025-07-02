@@ -33,11 +33,11 @@ const UserComponent = () => {
       if (!user) return;
 
       try {
-        console.log("🔍 Buscando pontos do usuario...");
+        if (import.meta.env.DEV) console.log("🔍 Buscando pontos do usuario...");
         const response = await api.get(`/api/points/userPoints/${user.uid}`);
         setPontuacao(response.data);
       } catch (error) {
-        console.error("❌ Erro ao buscar pontos:", error);
+        if (import.meta.env.DEV) console.error("❌ Erro ao buscar pontos:", error);
         setError("Erro ao carregar pontos. Tente novamente.");
       } finally {
         setLoading(false);

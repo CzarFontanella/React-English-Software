@@ -53,7 +53,7 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
       const audio = audioRef.current;
       audio.load();
       audio.play().catch((e) => {
-        console.log("Erro ao tentar reproduzir o áudio:", e);
+        if (import.meta.env.DEV) console.log("Erro ao tentar reproduzir o áudio:", e);
       });
     }
   }, [audioUrl, audioRef]);

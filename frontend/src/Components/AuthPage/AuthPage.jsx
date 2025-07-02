@@ -29,16 +29,16 @@ const AuthPage = () => {
         name: displayName || "Usuário",
       };
 
-      console.log("📡 Enviando usuário para o backend:", payload);
-
+      if (import.meta.env.DEV) console.log("📡 Enviando usuário para o backend:", payload);
       const response = await api.post("/api/users/create-user", payload);
-
-      console.log("✅ Resposta do backend:", response.data);
+      if (import.meta.env.DEV) console.log("✅ Resposta do backend:", response.data);
     } catch (err) {
-      console.error(
-        "❌ Erro ao salvar usuário no banco de dados:",
-        err.response?.data || err.message
-      );
+      if (import.meta.env.DEV) {
+        console.error(
+          "❌ Erro ao salvar usuário no banco de dados:",
+          err.response?.data || err.message
+        );
+      }
     }
   };
 

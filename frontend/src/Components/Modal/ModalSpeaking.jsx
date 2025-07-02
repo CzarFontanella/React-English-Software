@@ -11,29 +11,29 @@ const ModalSpeaking = ({ message, onClose, acertos = 0, showDoneBtn }) => {
     const user = auth.currentUser;
 
     if (!user) {
-      console.error("❌ Usuário não autenticado!");
+      if (import.meta.env.DEV) console.error("❌ Usuário não autenticado!");
       return;
     }
 
     try {
-      console.log(`🔹 Atualizando pontos de fala:`, {
-        userId: user.uid,
-        pointsSpeaking: acertos * 10,
-      });
-
+      if (import.meta.env.DEV) {
+        console.log(`🔹 Atualizando pontos de fala:`, {
+          userId: user.uid,
+          pointsSpeaking: acertos * 10,
+        });
+      }
       const response = await api.post("/api/points/update-speaking-points", {
         userId: user.uid,
         pointsSpeaking: acertos * 10,
       });
-
-      console.log("✅ Pontos de Fala salvos com sucesso:", response.data);
+      if (import.meta.env.DEV) console.log("✅ Pontos de Fala salvos com sucesso:", response.data);
 
       // 🔹 Navega para a Tela Final de Speaking
       navigate("/tela-final-speaking", {
         state: { pointsSpeaking: acertos * 10 },
       });
     } catch (error) {
-      console.error("❌ Erro ao atualizar pontos de fala:", error.message);
+      if (import.meta.env.DEV) console.error("❌ Erro ao atualizar pontos de fala:", error.message);
       alert("Erro ao salvar os pontos. Tente novamente.");
     }
   };

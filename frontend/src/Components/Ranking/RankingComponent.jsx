@@ -15,11 +15,11 @@ const RankingComponent = () => {
       alreadyFetched.current = true;
 
       try {
-        console.log("🔍 Buscando ranking...");
+        if (import.meta.env.DEV) console.log("🔍 Buscando ranking...");
         const response = await api.get("/api/points/ranking");
         setRanking(response.data);
       } catch (error) {
-        console.error("❌ Erro ao buscar ranking:", error);
+        if (import.meta.env.DEV) console.error("❌ Erro ao buscar ranking:", error);
         setError("Erro ao carregar ranking.");
       } finally {
         setLoading(false);

@@ -19,7 +19,11 @@ const Navbar = ({ voltarParaInicio }) => {
   }, []);
 
   const handleLogout = () => {
-    signOut(auth).then(() => setUser(null));
+    signOut(auth)
+      .then(() => setUser(null))
+      .catch((err) => {
+        if (import.meta.env.DEV) console.error("Erro ao fazer logout:", err);
+      });
   };
 
   return (

@@ -61,7 +61,7 @@ const ModalAuth = ({ isOpen, onClose, onSubmit, onSuccess }) => {
         });
       }
     } catch (error) {
-      console.error("Erro ao validar chave:", error);
+      if (import.meta.env.DEV) console.error("Erro ao validar chave:", error);
       setMessage({
         type: "error",
         text: "❌ Erro ao validar chave. Verifique sua conexão.",

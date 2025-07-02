@@ -45,7 +45,7 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica, setModalMess
       audio.pause();
       audio.load();
       audio.play().catch((e) => {
-        console.log("Erro ao reproduzir o áudio:", e);
+        if (import.meta.env.DEV) console.log("Erro ao reproduzir o áudio:", e);
       });
     }
   }, [audioUrl, audioRef]);

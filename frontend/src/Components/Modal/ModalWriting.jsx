@@ -12,36 +12,36 @@ const ModalWriting = ({ message, onClose, acertos = 0, showDoneBtn }) => {
     const user = auth.currentUser;
 
     if (!user) {
-      console.error("❌ Usuário não autenticado!");
+      if (import.meta.env.DEV) console.error("❌ Usuário não autenticado!");
       alert("Você precisa estar logado para salvar seus pontos.");
       return;
     }
 
     try {
       setIsLoading(true); // 🔹 Desabilita o botão enquanto processa
-
-      console.log(`🔹 Atualizando pontos de escrita:`, {
-        userId: user.uid,
-        pointsWriting: acertos * 10,
-      });
-
+      if (import.meta.env.DEV) {
+        console.log(`🔹 Atualizando pontos de escrita:`, {
+          userId: user.uid,
+          pointsWriting: acertos * 10,
+        });
+      }
       const response = await api.post("/api/points/update-writing-points", {
-        // ✅ Corrigida a URL da API
         userId: user.uid,
         pointsWriting: acertos * 10,
       });
-
-      console.log("✅ Pontos de Escrita salvos com sucesso:", response.data);
+      if (import.meta.env.DEV) console.log("✅ Pontos de Escrita salvos com sucesso:", response.data);
 
       // 🔹 Navega para a Tela Final de Writing
       navigate("/tela-final-writing", {
         state: { pointsWriting: acertos * 10 },
       });
     } catch (error) {
-      console.error(
-        "❌ Erro ao atualizar pontos de escrita:",
-        error.response?.data || error.message
-      );
+      if (import.meta.env.DEV) {
+        console.error(
+          "❌ Erro ao atualizar pontos de escrita:",
+          error.response?.data || error.message
+        );
+      }
       alert(
         `Erro ao salvar os pontos: ${
           error.response?.data?.error || "Tente novamente."

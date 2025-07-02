@@ -7,7 +7,7 @@ const TelaFinalWriting = () => {
   const location = useLocation();
   const pointsWriting = location.state?.pointsWriting ?? "Ainda não concluiu";
 
-  console.log("📌 Tela Final Writing - pontosWriting:", pointsWriting);
+  if (import.meta.env.DEV) console.log("📌 Tela Final Writing - pontosWriting:", pointsWriting);
 
   return (
     <div className="container-final">

@@ -70,7 +70,7 @@ const Talking = () => {
         };
       }
     } catch (error) {
-      console.error("❌ Erro ao validar chave:", error);
+      if (import.meta.env.DEV) console.error("❌ Erro ao validar chave:", error);
       return { success: false, message: "Erro de conexão com o servidor." };
     }
   };
@@ -102,7 +102,7 @@ const Talking = () => {
         });
       })
       .catch((err) => {
-        console.error("Erro ao salvar pontos:", err);
+        if (import.meta.env.DEV) console.error("Erro ao salvar pontos:", err);
         alert("❌ Erro ao salvar sua pontuação.");
       });
   };

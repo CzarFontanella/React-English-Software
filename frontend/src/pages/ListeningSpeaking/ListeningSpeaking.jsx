@@ -72,7 +72,7 @@ const handleStart = async () => {
         return { success: false, message: data.message };
       }
     } catch (err) {
-      console.error("Erro ao validar chave:", err);
+      if (import.meta.env.DEV) console.error("Erro ao validar chave:", err);
       return { success: false, message: "Erro ao validar chave." };
     }
   };
