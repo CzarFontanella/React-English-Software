@@ -65,25 +65,27 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
   };
 
   const handleContinueClick = async () => {
-    const canGenerate = await checkAudioLimit(user.uid);
-
-    if (canGenerate) {
+    // Permitir a 10ª resposta mesmo se checkAudioLimit retornar false
+    if (audiosGerados < 10) {
       if (normalizeText(inputText) === normalizeText(text)) {
+        const novoAcertos = (acertos || 0) + 1;
+        const novoAudiosGerados = (audiosGerados || 0) + 1;
         setProgresso((prevProgresso) => Math.min(prevProgresso + 10, 100));
-        setAcertos((prevAcertos) => (prevAcertos || 0) + 1);
-        await incrementAudioCount(user.uid);
-        setAudiosGerados((prevCount) => (prevCount || 0) + 1);
+        setAcertos(novoAcertos);
+        setAudiosGerados(novoAudiosGerados);
         setInputText("");
         setAttempts(0);
         setModalMessage("Parabéns! Você acertou.");
 
-        if (audiosGerados >= 10) {
-          finalizarPratica((acertos || 0) + 1);
+        if (novoAudiosGerados >= 10) {
+          // Última resposta, não gera novo áudio nem incrementa mais
+          finalizarPratica(novoAcertos);
           setModalMessage("Você finalizou a prática diária de 10 áudios!");
           setShowModal(true);
           setShowDoneBtn(true);
         } else {
           await gerarAudio();
+          await incrementAudioCount(user.uid);
         }
       } else {
         setAttempts((prevAttempts) => (prevAttempts || 0) + 1);

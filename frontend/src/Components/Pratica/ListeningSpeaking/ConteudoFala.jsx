@@ -88,7 +88,8 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
       const respostaCorreta = normalizeText(text);
 
       if (respostaUsuario === respostaCorreta) {
-        alert("✅ Correto!");
+        alert("✅ Correto! \n" +
+          "Você disse: " + textoFalado);
 
         const novoAcerto = acertos + 1;
         const novoTotal = audiosGerados + 1;
@@ -100,14 +101,13 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
         setTentativas(0);
         setTranscricao("");
 
-        await incrementAudioCount(user.uid);
-
         if (novoTotal >= 10) {
           setModalMessage("Você finalizou a prática diária de 10 áudios!");
           setShowModal(true);
           setShowDoneBtn(true);
           setTimeout(() => finalizarPratica(novoAcerto), 1000);
         } else {
+          await incrementAudioCount(user.uid);
           await gerarAudio();
         }
       } else {
