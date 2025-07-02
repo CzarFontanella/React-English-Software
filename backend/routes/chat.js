@@ -40,7 +40,9 @@ router.post("/chat", async (req, res) => {
     const mensagemGerada = resposta.data.choices[0].message.content;
     res.status(200).json({ resposta: mensagemGerada });
   } catch (err) {
-    console.error("Erro ao chamar a API da OpenAI:", err.response?.data || err);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Erro ao chamar a API da OpenAI:", err.response?.data || err);
+    }
     res.status(500).json({ error: "Erro ao gerar resposta com IA." });
   }
 });

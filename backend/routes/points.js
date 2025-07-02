@@ -31,7 +31,9 @@ router.post("/update-writing-points", async (req, res) => {
       pointsWriting: newPointsWriting,
     });
   } catch (error) {
-    console.error("❌ Erro ao atualizar pontos de escrita:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("❌ Erro ao atualizar pontos de escrita:", error);
+    }
     res.status(500).json({ error: "Erro ao atualizar pontos." });
   }
 });
@@ -64,7 +66,9 @@ router.post("/update-speaking-points", async (req, res) => {
       pointsSpeaking: newPointsSpeaking,
     });
   } catch (error) {
-    console.error("❌ Erro ao atualizar pontos de fala:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("❌ Erro ao atualizar pontos de fala:", error);
+    }
     res.status(500).json({ error: "Erro ao atualizar pontos." });
   }
 });

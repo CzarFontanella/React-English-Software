@@ -32,7 +32,9 @@ router.post("/create-user", async (req, res) => {
       res.status(200).json({ success: true, message: "Usuário já existe." });
     }
   } catch (error) {
-    console.error("❌ Erro ao criar usuário:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("❌ Erro ao criar usuário:", error);
+    }
     res.status(500).json({ message: "Erro no servidor ao criar usuário." });
   }
 });

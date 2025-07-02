@@ -2,7 +2,9 @@ const admin = require("firebase-admin");
 
 // 🔹 Lê e valida as credenciais do .env
 if (!process.env.FIREBASE_CREDENTIALS) {
-  console.error("❌ Variável FIREBASE_CREDENTIALS não encontrada no .env!");
+  if (process.env.NODE_ENV === 'development') {
+    console.error("❌ Variável FIREBASE_CREDENTIALS não encontrada no .env!");
+  }
   process.exit(1);
 }
 
@@ -18,9 +20,11 @@ const db = admin.firestore();
 // 🔹 Função para validar chave de ativação
 const validateActivationKey = async (userId, activationKey) => {
   try {
-    console.log(
-      `🔍 Verificando chave: ${activationKey} para usuário: ${userId}`
-    );
+    if (process.env.NODE_ENV === 'development') {
+      console.log(
+        `🔍 Verificando chave: ${activationKey} para usuário: ${userId}`
+      );
+    }
     const keyRef = db.collection("activationKeys").doc(activationKey);
     const keyDoc = await keyRef.get();
 
@@ -40,10 +44,14 @@ const validateActivationKey = async (userId, activationKey) => {
       await userRef.update({ hasActivated: true });
     }
 
-    console.log(`✅ Chave ${activationKey} ativada com sucesso para ${userId}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`✅ Chave ${activationKey} ativada com sucesso para ${userId}`);
+    }
     return { success: true, message: "✅ Chave ativada com sucesso!" };
   } catch (error) {
-    console.error("❌ Erro ao validar chave:", error.message);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("❌ Erro ao validar chave:", error.message);
+    }
     return { success: false, message: error.message };
   }
 };

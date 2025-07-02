@@ -32,20 +32,26 @@ router.post("/generate-audio", async (req, res) => {
 
     gtts.save(filePath, (err) => {
       if (err) {
-        console.error("❌ Erro ao salvar áudio:", err);
+        if (process.env.NODE_ENV === 'development') {
+          console.error("❌ Erro ao salvar áudio:", err);
+        }
         return res.status(500).json({ error: "Erro ao gerar áudio!" });
       }
 
       res.sendFile(filePath, () => {
         fs.unlink(filePath, (unlinkErr) => {
           if (unlinkErr) {
-            console.error("⚠️ Erro ao remover arquivo temporário:", unlinkErr);
+            if (process.env.NODE_ENV === 'development') {
+              console.error("⚠️ Erro ao remover arquivo temporário:", unlinkErr);
+            }
           }
         });
       });
     });
   } catch (error) {
-    console.error("❌ Erro ao processar solicitação de áudio:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("❌ Erro ao processar solicitação de áudio:", error);
+    }
     res.status(500).json({ error: "Erro interno no servidor!" });
   }
 });

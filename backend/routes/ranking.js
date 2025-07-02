@@ -5,7 +5,9 @@ const { db } = require("../firebase-config");
 // 🔹 Rota para obter os 10 usuários com mais pontos totais
 router.get("/ranking", async (req, res) => {
   try {
-    console.log("🔍 Buscando ranking dos usuários..."); // Log para debug
+    if (process.env.NODE_ENV === 'development') {
+      console.log("🔍 Buscando ranking dos usuários..."); // Log para debug
+    }
 
     const snapshot = await db.collection("users").get();
 
@@ -26,7 +28,9 @@ router.get("/ranking", async (req, res) => {
 
     return res.json(ranking.slice(0, 10));
   } catch (error) {
-    console.error("❌ Erro ao buscar ranking:", error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error("❌ Erro ao buscar ranking:", error);
+    }
     return res.status(500).json({ message: "Erro ao buscar ranking", error });
   }
 });

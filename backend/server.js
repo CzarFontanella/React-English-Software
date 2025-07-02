@@ -26,5 +26,7 @@ app.use("/api/conversar", conversarRoute);
 
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+  }
 });
