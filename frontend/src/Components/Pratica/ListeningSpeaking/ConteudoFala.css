@@ -1,3 +1,21 @@
+.btn-end {
+  padding: 15px;
+  width: 200px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  letter-spacing: 1px;
+  border-radius: 10px;
+  background: var(--primary, #4f8cff);
+  color: #fff;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-end:hover {
+  background: var(--primary-dark, #3766b1);
+  transform: scale(1.05);
+}
 .conteudo-fala {
   display: flex;
   flex-direction: column;

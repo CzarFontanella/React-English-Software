@@ -40,8 +40,12 @@ const ListeningWritingComponent = () => {
   };
 
   /* ---------- agora abre a modal ---------- */
-  const finalizarPratica = async () => {
-    await salvarPontosEscrita(acertos * 10);
+
+  // Permite receber acertos do filho, garantindo sempre o valor mais atualizado
+  const finalizarPratica = async (acertosParam) => {
+    const pontosParaSalvar = typeof acertosParam === "number" ? acertosParam : acertos;
+    await salvarPontosEscrita(pontosParaSalvar * 10);
+    setAcertos(pontosParaSalvar); // sincroniza estado do pai
     setModalWritingOpen(true);
   };
 

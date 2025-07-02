@@ -161,6 +161,9 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
             Pular
           </button>
         )}
+        <button className="btn-end" onClick={() => finalizarPratica(acertos)}>
+          Encerrar Prática
+        </button>
       </div>
     </div>
   );

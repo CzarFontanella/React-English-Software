@@ -145,9 +145,14 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica, setModalMess
         {gravando ? "🎙️ Ouvindo..." : "🎤 Falar"}
       </button>
 
+
       {tentativas >= 3 && (
         <button onClick={pularFrase}>⏭️ Pular</button>
       )}
+
+      <button className="btn-end" onClick={() => finalizarPratica(acertos)}>
+        Encerrar Prática
+      </button>
 
       {transcricao && (
         <p className="feedback">🗣️ Você disse: {transcricao}</p>
