@@ -8,7 +8,7 @@ import { useConteudoPratica } from "../../Hooks/UseConteudoPratica";
 import "../../../pages/Practice.css";
 import "./ConteudoFala.css";
 
-const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
+const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica, setModalMessage: setParentModalMessage }) => {
   const { audioUrl, audioRef, gerarAudio, text } = useConteudoPratica();
 
   const [transcricao, setTranscricao] = useState("");
@@ -17,23 +17,16 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
   const [audiosGerados, setAudiosGerados] = useState(0);
   const [user, setUser] = useState(null);
   const [acertos, setAcertosInterno] = useState(0);
-
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
-  const [showDoneBtn, setShowDoneBtn] = useState(false);
+  // Modal e mensagem agora controlados pelo pai
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
-      if (firebaseUser) {
-        setUser(firebaseUser);
-      }
-    });
+    const unsubscribe = auth.onAuthStateChanged(setUser);
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    const gerarPrimeiroAudio = async () => {
-      if (!user) return;
+    if (!user) return;
+    (async () => {
       const canGenerate = await checkAudioLimit(user.uid);
       if (!canGenerate) {
         alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
@@ -43,68 +36,60 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
       await incrementAudioCount(user.uid);
       await gerarAudio();
       setAudiosGerados(0);
-    };
-    gerarPrimeiroAudio();
+    })();
   }, [user]);
 
   useEffect(() => {
     if (audioUrl && audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.load();
-      audioRef.current.play().catch((e) => {
+      const audio = audioRef.current;
+      audio.pause();
+      audio.load();
+      audio.play().catch((e) => {
         console.log("Erro ao reproduzir o áudio:", e);
       });
     }
-  }, [audioUrl]);
+  }, [audioUrl, audioRef]);
 
   const iniciarReconhecimentoVoz = async () => {
-    console.log("Acertos: " + acertos);
-    console.log("Audios Gerados: " + audiosGerados);
-
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
+    // Permite a 10ª resposta ser computada normalmente
+    if (audiosGerados >= 10) {
+      alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
+      finalizarPratica();
+      return;
+    }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert("Seu navegador não suporta reconhecimento de voz.");
       return;
     }
-
     const recognition = new SpeechRecognition();
     recognition.lang = "en-US";
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-
     recognition.start();
     setGravando(true);
-
     recognition.onresult = async (event) => {
       const textoFalado = event.results[0][0].transcript;
       setTranscricao(textoFalado);
       recognition.stop();
       setGravando(false);
-
       const respostaUsuario = normalizeText(textoFalado);
       const respostaCorreta = normalizeText(text);
-
       if (respostaUsuario === respostaCorreta) {
-        alert("✅ Correto! \n" +
-          "Você disse: " + textoFalado);
-
+        alert(`✅ Correto! \nVocê disse: ${textoFalado}`);
         const novoAcerto = acertos + 1;
         const novoTotal = audiosGerados + 1;
-
         setAcertos(novoAcerto);
         setAcertosInterno(novoAcerto);
         setAudiosGerados(novoTotal);
         setProgresso((prev) => prev + 10);
         setTentativas(0);
         setTranscricao("");
-
-        if (novoTotal >= 10) {
-          setModalMessage("Você finalizou a prática diária de 10 áudios!");
-          setShowModal(true);
-          setShowDoneBtn(true);
+        // Checa o limite no backend APÓS computar localmente
+        const canGenerate = await checkAudioLimit(user?.uid);
+        if (!canGenerate || novoTotal >= 10) {
+          if (setParentModalMessage) setParentModalMessage("Você finalizou a prática diária de 10 áudios!");
           setTimeout(() => finalizarPratica(novoAcerto), 1000);
         } else {
           await incrementAudioCount(user.uid);
@@ -115,37 +100,32 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
         alert("❌ Tente novamente.");
       }
     };
-
     recognition.onerror = () => {
       setGravando(false);
       alert("Erro no reconhecimento de voz.");
     };
   };
 
- const pularFrase = async () => {
-  const canGenerate = await checkAudioLimit(user?.uid);
-  if (canGenerate) {
-    await incrementAudioCount(user.uid);
-    setProgresso((prev) => prev + 10); // ✅ agora incrementa o progresso
-    setTranscricao("");
-    setTentativas(0);
-
-    const novoTotal = audiosGerados + 1;
-    setAudiosGerados(novoTotal);
-
-    if (novoTotal >= 10) {
-      setModalMessage("Você finalizou a prática diária de 10 áudios!");
-      setShowModal(true);
-      setShowDoneBtn(true);
-      setTimeout(() => finalizarPratica(acertos), 1000);
+  const pularFrase = async () => {
+    const canGenerate = await checkAudioLimit(user?.uid);
+    if (canGenerate) {
+      await incrementAudioCount(user.uid);
+      setProgresso((prev) => prev + 10);
+      setTranscricao("");
+      setTentativas(0);
+      const novoTotal = audiosGerados + 1;
+      setAudiosGerados(novoTotal);
+      if (novoTotal >= 10) {
+        if (setParentModalMessage) setParentModalMessage("Você finalizou a prática diária de 10 áudios!");
+        setTimeout(() => finalizarPratica(acertos), 1000);
+      } else {
+        await gerarAudio();
+      }
     } else {
-      await gerarAudio();
+      alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
+      finalizarPratica();
     }
-  } else {
-    alert("❌ Você atingiu o limite diário de 10 práticas de fala.");
-    finalizarPratica();
-  }
-};
+  };
 
   return (
     <div className="conteudo-fala">
@@ -155,9 +135,7 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
           <source src={audioUrl} type="audio/mpeg" />
           Seu navegador não suporta o elemento de áudio.
         </audio>
-      ) : (
-        <p>Carregando áudio...</p>
-      )}
+      ) : <p>Carregando áudio...</p>}
 
       <button
         className="botao-falar"
@@ -167,18 +145,15 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica }) => {
         {gravando ? "🎙️ Ouvindo..." : "🎤 Falar"}
       </button>
 
-      {tentativas >= 3 && <button onClick={pularFrase}>⏭️ Pular</button>}
-
-      {transcricao && <p className="feedback">🗣️ Você disse: {transcricao}</p>}
-
-      {showModal && (
-        <div className="modal">
-          <p>{modalMessage}</p>
-          {!showDoneBtn && (
-            <button onClick={() => setShowModal(false)}>Fechar</button>
-          )}
-        </div>
+      {tentativas >= 3 && (
+        <button onClick={pularFrase}>⏭️ Pular</button>
       )}
+
+      {transcricao && (
+        <p className="feedback">🗣️ Você disse: {transcricao}</p>
+      )}
+
+      {/* Modal removido: controle total pelo pai */}
     </div>
   );
 };

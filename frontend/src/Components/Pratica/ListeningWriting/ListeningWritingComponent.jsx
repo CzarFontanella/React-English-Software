@@ -24,10 +24,7 @@ const ListeningWritingComponent = () => {
 
   /* ---------- salva pontos no backend ---------- */
   const salvarPontosEscrita = async pontos => {
-    if (!user) {
-      console.error("❌ Usuário não autenticado!");
-      return;
-    }
+    if (!user) return console.error("❌ Usuário não autenticado!");
     try {
       await fetch(
         `${import.meta.env.VITE_API_BASE_URL}/api/update-writing-points`,
@@ -44,9 +41,8 @@ const ListeningWritingComponent = () => {
 
   /* ---------- agora abre a modal ---------- */
   const finalizarPratica = async () => {
-    const pontos = acertos * 10;
-    await salvarPontosEscrita(pontos);
-    setModalWritingOpen(true);        // ⬅️ AO INVÉS de navegar direto
+    await salvarPontosEscrita(acertos * 10);
+    setModalWritingOpen(true);
   };
 
   /* ---------- navega após fechar a modal ---------- */

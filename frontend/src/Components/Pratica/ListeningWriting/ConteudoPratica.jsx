@@ -30,72 +30,67 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
-
-      // Quando o usuário estiver logado, tenta carregar o primeiro áudio
       if (user) {
         const canGenerate = await checkAudioLimit(user.uid);
         if (canGenerate) {
-          setPlays((prevPlays) => prevPlays + 1);
+          setPlays((prev) => prev + 1);
           setIsLoading(true);
           await handlePlayAudio(user.uid, gerarAudio);
-          setIsLoading(false);
         } else {
           setModalMessage("Você atingiu o limite de 10 áudios por dia.");
           setShowDoneBtn(true);
           setShowModal(true);
         }
+        setIsLoading(false);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
 
   useEffect(() => {
     if (audioUrl && audioRef.current) {
-      audioRef.current.load();
-      audioRef.current.play().catch((e) => {
+      const audio = audioRef.current;
+      audio.load();
+      audio.play().catch((e) => {
         console.log("Erro ao tentar reproduzir o áudio:", e);
       });
     }
-  }, [audioUrl]);
+  }, [audioUrl, audioRef]);
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  const closeModal = () => setShowModal(false);
 
   const handleContinueClick = async () => {
-    // Permitir a 10ª resposta mesmo se checkAudioLimit retornar false
-    if (audiosGerados < 10) {
-      if (normalizeText(inputText) === normalizeText(text)) {
-        const novoAcertos = (acertos || 0) + 1;
-        const novoAudiosGerados = (audiosGerados || 0) + 1;
-        setProgresso((prevProgresso) => Math.min(prevProgresso + 10, 100));
-        setAcertos(novoAcertos);
-        setAudiosGerados(novoAudiosGerados);
-        setInputText("");
-        setAttempts(0);
-        setModalMessage("Parabéns! Você acertou.");
-
-        if (novoAudiosGerados >= 10) {
-          // Última resposta, não gera novo áudio nem incrementa mais
-          finalizarPratica(novoAcertos);
-          setModalMessage("Você finalizou a prática diária de 10 áudios!");
-          setShowModal(true);
-          setShowDoneBtn(true);
-        } else {
-          await gerarAudio();
-          await incrementAudioCount(user.uid);
-        }
-      } else {
-        setAttempts((prevAttempts) => (prevAttempts || 0) + 1);
-        setModalMessage("Você errou! Tente novamente.");
-        setShowModal(true);
-      }
-    } else {
+    if (audiosGerados >= 10) {
       setModalMessage("Você atingiu o limite de 10 áudios por dia.");
       setShowModal(true);
       setShowDoneBtn(true);
+      return;
+    }
+    if (normalizeText(inputText) === normalizeText(text)) {
+      const novoAcertos = (acertos || 0) + 1;
+      const novoAudiosGerados = (audiosGerados || 0) + 1;
+      setProgresso((prev) => Math.min(prev + 10, 100));
+      setAcertos(novoAcertos);
+      setAudiosGerados(novoAudiosGerados);
+      setInputText("");
+      setAttempts(0);
+      setModalMessage("Parabéns! Você acertou.");
+      // Checa o limite no backend APÓS computar localmente
+      const canGenerate = await checkAudioLimit(user?.uid);
+      if (!canGenerate || novoAudiosGerados >= 10) {
+        setModalMessage("Você finalizou a prática diária de 10 áudios!");
+        setShowModal(true);
+        setShowDoneBtn(true);
+        setTimeout(() => finalizarPratica(novoAcertos), 1000);
+      } else {
+        await gerarAudio();
+        await incrementAudioCount(user.uid);
+      }
+    } else {
+      setAttempts((prev) => (prev || 0) + 1);
+      setModalMessage("Você errou! Tente novamente.");
+      setShowModal(true);
     }
   };
 
@@ -104,13 +99,13 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     const canGenerate = await checkAudioLimit(user.uid);
 
     if (canGenerate) {
-      await incrementAudioCount(user.uid);
       setInputText("");
       setAttempts(0);
 
       if (audiosGerados >= 10) {
         finalizarPratica(acertos);
       } else {
+        await incrementAudioCount(user.uid);
         await gerarAudio();
       }
     } else {
