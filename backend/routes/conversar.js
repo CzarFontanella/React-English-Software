@@ -90,10 +90,9 @@ router.post("/", async (req, res) => {
       audioBase64,
     });
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error("🔥 Erro completo:", error); // <-- log completo
-      console.error("🔥 Erro da API:", error.response?.data); // <-- erro da OpenAI ou ElevenLabs
-    }
+    console.error("🔥 Erro completo:", error); // <-- log completo
+    console.error("🔥 Erro da API:", error.response?.data); // <-- erro da OpenAI ou ElevenLabs
+
     res.status(500).json({ error: "Erro ao gerar resposta com voz." });
   }
 });
