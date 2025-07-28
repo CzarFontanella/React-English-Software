@@ -33,6 +33,9 @@ router.post("/", async (req, res) => {
     });
   }
 
+  console.log("Headers recebidos:", req.headers);
+  console.log("Chave usada:", process.env.ELEVEN_API_KEY);
+
   try {
     // 🔹 Passo 1: ChatGPT gera a resposta
     const chatRes = await axios.post(
