@@ -7,7 +7,6 @@
     --gray-900: #111827;
     --gray-950: #030712;
     --gray-1000: #010307;
-    --faded: linear-gradient(100deg, var(--verde-codi) 10%, var(--azul-codi) 50%, var(--roxo-codi) 90%);
 }
 
 * {

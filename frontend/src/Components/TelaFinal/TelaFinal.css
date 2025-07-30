@@ -18,7 +18,7 @@
 
 .header-final {
   font-size: 2.5rem;
-  background-image: linear-gradient(90deg, #ff8c00, #ff0080);
+  background-color: var(--roxo-codi);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -82,14 +82,14 @@
   width: 200px;
   border: 1px solid white;
   border-radius: 10px;
-  background-image: var(--faded);
+  background-color: var(--roxo-codi);
 }
 
 .btn-inicio:hover {
   transform: scale(1.1);
   border: none;
   transition: ease-in-out;
-  background-image: var(--faded);
+  background-color: var(--roxo-codi);
   cursor: pointer;
   border: 1px solid white;
 }

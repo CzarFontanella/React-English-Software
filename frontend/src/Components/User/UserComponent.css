@@ -29,6 +29,6 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    background: var(--faded);
+    background: var(--roxo-codi);
     transition: transform 0.3s ease-in-out;
 }

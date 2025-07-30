@@ -30,7 +30,7 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  background: var(--faded);
+  background: var(--roxo-codi);
   transition: transform 0.3s ease-in-out;
 }
 
@@ -96,7 +96,7 @@
 }
 
 .texto-pratica span {
-  background-image: var(--faded);
+  background-color: var(--roxo-codi);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }

@@ -1,18 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap");
 
-:root {
-  --roxo-codi: #a243d2;
-  --gray-900: #111827;
-  --gray-500: #6b7280;
-  --faded: linear-gradient(
-    97.57deg,
-    #29e0a9 -12.7%,
-    #5f75f2 32.64%,
-    #9956f6 78.49%,
-    #e254ff 109.78%
-  );
-}
-
 .header-container {
   background-color: var(--gray-900);
   font-family: "Montserrat", sans-serif;
@@ -51,7 +38,7 @@
 }
 
 .header-text span {
-  background-image: var(--faded);
+  background-color: var(--roxo-codi);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -76,7 +63,7 @@
 }
 
 .mobile-practice-btn {
-  background-image: var(--faded);
+  background-color: var(--roxo-codi);
   color: white;
   font-weight: 600;
   padding: 12px 24px;

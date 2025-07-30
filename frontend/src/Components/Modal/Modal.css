@@ -34,7 +34,7 @@
   background: none;
   font-size: 18px;
   cursor: pointer;
-  color: var(--faded);
+  color: var(--roxo-codi);
 }
 
 .modal-close:hover {
@@ -54,14 +54,14 @@
   background: transparent;
   /* outline: none; */
   border-radius: 10px;
-  background-image: var(--faded);
+  background-color: var(--roxo-codi);
 }
 
 .btn-finalize:hover {
   transform: scale(1.1);
   border: none;
   transition: ease-in-out;
-  background-image: var(--faded);
+  background-color: var(--roxo-codi);
   cursor: pointer;
 }
 
@@ -95,7 +95,7 @@
   .btn-finalize {
     border: none;
     transition: ease-in-out;
-    background-image: var(--faded);
+    background-color: var(--roxo-codi);
     width: 70%;
   }
 }
