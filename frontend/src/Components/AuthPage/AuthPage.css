@@ -29,7 +29,7 @@ button,
   padding-block: 2dvh;
   padding-inline: 3dvw;
   border: none;
-  background-color: #9d53e2;
+  background-color: var(--roxo-codi);
   color: white;
   font-size: 16px;
   cursor: pointer;

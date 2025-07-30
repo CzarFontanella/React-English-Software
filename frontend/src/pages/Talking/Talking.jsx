@@ -139,7 +139,7 @@ const Talking = () => {
           </p>
           
           <button className="start-button" onClick={handleStartClick}>
-            Iniciar Conversa com a IA
+            Iniciar Conversa com IA
           </button>
         </div>
       ) : (

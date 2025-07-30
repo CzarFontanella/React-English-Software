@@ -1,13 +1,14 @@
 :root {
     --roxo-codi: #A243D2;
-    --fonte-marrom: #211B15;
-    --fonte-preta: #1C1C1C;
+    --verde-codi: #1AAEA1;
+    --azul-codi: #3E72FF;
+    --navbar-bg: #121212;
+    --fonte-cinza: #9ca3af;
     --gray-900: #111827;
     --gray-950: #030712;
     --gray-1000: #010307;
-    --faded: linear-gradient(97.57deg, #29e0a9 -12.7%, #5f75f2 32.64%, #9956f6 78.49%, #e254ff 109.78%);
+    --faded: linear-gradient(100deg, var(--verde-codi) 10%, var(--azul-codi) 50%, var(--roxo-codi) 90%);
 }
-
 
 * {
     margin: 0;
@@ -30,8 +31,8 @@ body {
 
 .App .container {
     flex: 1;
-    padding-inline: 5dvw;
-    padding-block: 5dvh;
+    padding-inline: 3dvw;
+    padding-block: 3dvh;
     align-items: center;
     align-content: center;
     justify-items: center;

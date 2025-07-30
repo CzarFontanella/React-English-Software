@@ -3,8 +3,8 @@ import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
 import ListeningWritingComponent from "../../Components/Pratica/ListeningWriting/ListeningWritingComponent";
-import "../Practice.css";
 import { checkAudioLimit } from "../../utils/control";
+import "../Practice.css";
 
 const ListeningWriting = () => {
   const [praticando, setPraticando] = useState(false);

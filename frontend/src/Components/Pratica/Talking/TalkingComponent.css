@@ -80,14 +80,3 @@ audio {
   background-color: #2c2c3a;
   padding: 6px;
 }
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}

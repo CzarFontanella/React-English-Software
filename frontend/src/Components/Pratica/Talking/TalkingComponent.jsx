@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "./TalkingComponent.css";
 import { auth } from "../../../firebaseConfig";
+import "../../../pages/Practice.css";
 
 const TalkingComponent = ({ setPointsSpeaking, finalizarPratica }) => {
   const [transcricao, setTranscricao] = useState("");
@@ -58,7 +58,8 @@ const TalkingComponent = ({ setPointsSpeaking, finalizarPratica }) => {
       const data = await response.json();
       console.log("✅ Pontuação salva automaticamente:", data.pointsSpeaking);
     } catch (err) {
-      if (import.meta.env.DEV) console.error("❌ Erro ao salvar pontos automaticamente:", err);
+      if (import.meta.env.DEV)
+        console.error("❌ Erro ao salvar pontos automaticamente:", err);
     }
   };
 
@@ -99,14 +100,11 @@ const TalkingComponent = ({ setPointsSpeaking, finalizarPratica }) => {
   const conversarComIA = async (mensagem) => {
     try {
       const API_URL = import.meta.env.VITE_API_BASE_URL;
-      const resposta = await fetch(
-        `${API_URL}/api/conversar`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: mensagem }),
-        }
-      );
+      const resposta = await fetch(`${API_URL}/api/conversar`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: mensagem }),
+      });
 
       if (!resposta.ok) {
         throw new Error(`Erro do servidor: ${resposta.status}`);
@@ -135,7 +133,7 @@ const TalkingComponent = ({ setPointsSpeaking, finalizarPratica }) => {
   };
 
   return (
-    <div className="talking-component">
+    <div className="practice-container">
       <h2>🗣️ Conversando com a IA</h2>
 
       <div className="tempo-restante">
@@ -143,10 +141,6 @@ const TalkingComponent = ({ setPointsSpeaking, finalizarPratica }) => {
       </div>
 
       <div className="pontuacao">⭐ Pontuação atual: {pontuacaoAtual}</div>
-
-      <button onClick={iniciarReconhecimentoVoz} disabled={loading}>
-        🎤 Falar
-      </button>
 
       {transcricao && (
         <p className="resumo">
@@ -169,7 +163,18 @@ const TalkingComponent = ({ setPointsSpeaking, finalizarPratica }) => {
 
       {loading && <p className="loading">⏳ A IA está respondendo...</p>}
 
-      <button onClick={finalizarPratica}>Encerrar Prática</button>
+      <div className="footer-pratica">
+        <button
+          className="btn-continue"
+          onClick={iniciarReconhecimentoVoz}
+          disabled={loading}
+        >
+          Falar
+        </button>
+        <button className="btn-end" onClick={finalizarPratica}>
+          Encerrar
+        </button>
+      </div>
     </div>
   );
 };

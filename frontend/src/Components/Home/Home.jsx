@@ -20,7 +20,7 @@ const Home = React.memo(({ comecarPratica }) => (
           Listening & Speaking
         </Link>
         <Link to="/talking" className="mobile-practice-btn">
-          Conversação IA
+          Conversa com IA
         </Link>
       </div>
       <p>

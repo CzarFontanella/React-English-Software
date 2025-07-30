@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
           {
             role: "system",
             content:
-              "Você é um assistente educacional amigável para prática de inglês conversacional.",
+              "Você é um assistente educacional amigável para prática de inglês conversacional. As respostas devem conter no maximo 580 caractéres.",
           },
           {
             role: "user",

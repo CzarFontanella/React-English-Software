@@ -64,7 +64,9 @@ const UserComponent = () => {
 
   return (
     <div className="user-container">
-      <h1>Bem-vindo {user.displayName}!</h1>
+      <h1>Bem-vindo </h1>
+      <h2>{user.displayName}</h2>
+        
       {!user.photoURL ? (
         <img className="userview-img" src="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1" alt="Foto do usuário" />
       ) : (

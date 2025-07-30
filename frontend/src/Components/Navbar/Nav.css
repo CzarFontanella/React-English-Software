@@ -1,22 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap");
 
-:root {
-  --roxo-codi: #a243d2;
-  --gray-900: #111827;
-  --gray-950: #030712;
-  --white: #ffffff;
-}
-
 .nav-container {
   position: fixed;
   bottom: 0;
   height: 6dvh;
-  width: 100vw;
+  width: 100dvw;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px;
-  background-color: #121212;
+  padding: 1dvw;
+  background-color: var(--navbar-bg);
   border-top: 1px solid var(--gray-950);
   flex-wrap: wrap;
   align-content: center;
@@ -33,12 +26,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 10dvw;
 }
 
 .nav-links .nav-item {
   text-decoration: none;
-  color: var(--white);
+  color: white;
   font-weight: 600;
   font-size: 18px;
   transition: color 0.3s ease-in-out;

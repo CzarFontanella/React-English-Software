@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ConteudoPratica from "./ConteudoPratica";
+import ConteudoPratica from "./ConteudoEscrita";
 import "../../../global.css";
 import ProgressBar from "../ProgressBar";
 import { auth } from "../../../firebaseConfig";

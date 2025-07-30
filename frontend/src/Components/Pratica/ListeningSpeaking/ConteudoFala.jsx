@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { auth } from "../../../firebaseConfig";
-import {
-  checkAudioLimit,
-  incrementAudioCount,
-} from "../../../utils/control";
+import { checkAudioLimit, incrementAudioCount } from "../../../utils/control";
 import { useConteudoPratica } from "../../Hooks/UseConteudoPratica";
 import "../../../pages/Practice.css";
-import "./ConteudoFala.css";
 
-const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica, setModalMessage: setParentModalMessage }) => {
+const ConteudoFala = ({
+  setProgresso,
+  setAcertos,
+  finalizarPratica,
+  setModalMessage: setParentModalMessage,
+}) => {
   const { audioUrl, audioRef, gerarAudio, text } = useConteudoPratica();
 
   const [transcricao, setTranscricao] = useState("");
@@ -57,7 +58,8 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica, setModalMess
       finalizarPratica();
       return;
     }
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       alert("Seu navegador não suporta reconhecimento de voz.");
       return;
@@ -89,7 +91,10 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica, setModalMess
         // Checa o limite no backend APÓS computar localmente
         const canGenerate = await checkAudioLimit(user?.uid);
         if (!canGenerate || novoTotal >= 10) {
-          if (setParentModalMessage) setParentModalMessage("Você finalizou a prática diária de 10 áudios!");
+          if (setParentModalMessage)
+            setParentModalMessage(
+              "Você finalizou a prática diária de 10 áudios!"
+            );
           setTimeout(() => finalizarPratica(novoAcerto), 1000);
         } else {
           await incrementAudioCount(user.uid);
@@ -116,7 +121,10 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica, setModalMess
       const novoTotal = audiosGerados + 1;
       setAudiosGerados(novoTotal);
       if (novoTotal >= 10) {
-        if (setParentModalMessage) setParentModalMessage("Você finalizou a prática diária de 10 áudios!");
+        if (setParentModalMessage)
+          setParentModalMessage(
+            "Você finalizou a prática diária de 10 áudios!"
+          );
         setTimeout(() => finalizarPratica(acertos), 1000);
       } else {
         await gerarAudio();
@@ -128,35 +136,41 @@ const ConteudoFala = ({ setProgresso, setAcertos, finalizarPratica, setModalMess
   };
 
   return (
-    <div className="conteudo-fala">
-      <p>Reproduza o áudio e fale o que ouviu:</p>
+    <div className="practice-container">
+      <div className="texto-pratica">
+        <p>Reproduza o <span>áudio</span> e fale o que <span>ouviu</span>:</p>
+      </div>
+      
       {audioUrl ? (
         <audio controls ref={audioRef}>
           <source src={audioUrl} type="audio/mpeg" />
           Seu navegador não suporta o elemento de áudio.
         </audio>
-      ) : <p>Carregando áudio...</p>}
-
-      <button
-        className="botao-falar"
-        onClick={iniciarReconhecimentoVoz}
-        disabled={gravando}
-      >
-        {gravando ? "🎙️ Ouvindo..." : "🎤 Falar"}
-      </button>
-
-
-      {tentativas >= 3 && (
-        <button onClick={pularFrase}>⏭️ Pular</button>
+      ) : (
+        <p>Carregando áudio...</p>
       )}
 
-      <button className="btn-end" onClick={() => finalizarPratica(acertos)}>
-        Encerrar Prática
-      </button>
+      <div className="footer-pratica">
+        <button
+          className="btn-continue"
+          onClick={iniciarReconhecimentoVoz}
+          disabled={gravando}
+        >
+          {gravando ? "Ouvindo..." : "Falar"}
+        </button>
 
-      {transcricao && (
-        <p className="feedback">🗣️ Você disse: {transcricao}</p>
-      )}
+        {tentativas >= 3 && (
+          <button className="btn-skip" onClick={pularFrase}>
+            Pular
+          </button>
+        )}
+
+        <button className="btn-end" onClick={() => finalizarPratica(acertos)}>
+          Encerrar
+        </button>
+      </div>
+
+      {transcricao && <p className="resumo">🗣️ <strong>Você disse</strong>: {transcricao}</p>}
 
       {/* Modal removido: controle total pelo pai */}
     </div>

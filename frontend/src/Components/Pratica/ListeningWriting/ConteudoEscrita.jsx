@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
 import { useConteudoPratica } from "../../Hooks/UseConteudoPratica";
 import Modal from "../../Modal/ModalWriting";
-import {
-  getAuth,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   checkAudioLimit,
   handlePlayAudio,
   incrementAudioCount,
 } from "../../../utils/control"; // Funções de controle com firebase
-import "../../../pages/Practice.css"
-import "./ConteudoPratica.css";
+import "../../../pages/Practice.css";
 
 const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
   const { audioUrl, audioRef, text, gerarAudio } = useConteudoPratica();
@@ -47,13 +43,13 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
     return () => unsubscribe();
   }, []);
 
-
   useEffect(() => {
     if (audioUrl && audioRef.current) {
       const audio = audioRef.current;
       audio.load();
       audio.play().catch((e) => {
-        if (import.meta.env.DEV) console.log("Erro ao tentar reproduzir o áudio:", e);
+        if (import.meta.env.DEV)
+          console.log("Erro ao tentar reproduzir o áudio:", e);
       });
     }
   }, [audioUrl, audioRef]);
@@ -115,7 +111,7 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
   };
 
   return (
-    <div className="container-pratica">
+    <div className="practice-container">
       {showModal && (
         <Modal
           message={modalMessage}
@@ -127,7 +123,7 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
       )}
       <div className="texto-pratica">
         <p>
-          Reproduza o <span>áudio</span> para ouvir sua <span>frase.</span>
+          Reproduza o <span>áudio</span> para ouvir sua <span>frase:</span>
         </p>
       </div>
 
@@ -140,7 +136,6 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
         <p>Carregando áudio...</p>
       )}
 
-
       <div className="input-pratica">
         <textarea
           placeholder="Digite o que você ouviu: "
@@ -152,17 +147,18 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
       <div className="footer-pratica">
         {plays > 0 && (
           <button className="btn-continue" onClick={handleContinueClick}>
-            Continuar
+            Responder
           </button>
         )}
 
-        {attempts >= 3 && (
+        {attempts > 2 && (
           <button className="btn-skip" onClick={handleSkip}>
             Pular
           </button>
         )}
+
         <button className="btn-end" onClick={() => finalizarPratica(acertos)}>
-          Encerrar Prática
+          Encerrar
         </button>
       </div>
     </div>
@@ -172,9 +168,9 @@ const ConteudoPratica = ({ setProgresso, finalizarPratica }) => {
 function normalizeText(str) {
   return str
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")   // Remove acentos
-    .replace(/[^a-z0-9]/gi, "")        // Remove caracteres especiais e espaços
-    .toLowerCase();                    // Converte para minúsculo
+    .replace(/[\u0300-\u036f]/g, "") // Remove acentos
+    .replace(/[^a-z0-9]/gi, "") // Remove caracteres especiais e espaços
+    .toLowerCase(); // Converte para minúsculo
 }
 
 export default ConteudoPratica;
