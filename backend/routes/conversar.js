@@ -1,42 +1,31 @@
 const express = require("express");
 const axios = require("axios");
+const { PassThrough } = require("stream");
+const gTTS = require("gtts");
 const router = express.Router();
 
-// Variaveis de Ambiente
-const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
-const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID;
+// Variáveis de ambiente
 const openaiApiKey = process.env.OPENAI_API_KEY;
 
-// Logs para troubleshooting das variaveis de ambiente
+// Logs para troubleshooting das variáveis de ambiente
 console.log("Environment variables check in conversar.js:");
 console.log("- OpenAI API Key:", openaiApiKey ? "defined" : "undefined");
-console.log(
-  "- ElevenLabs API Key:",
-  elevenLabsApiKey ? "defined" : "undefined"
-);
-console.log(
-  "- ElevenLabs Voice ID:",
-  elevenLabsVoiceId ? "defined" : "undefined"
-);
 
 router.post("/", async (req, res) => {
   const { prompt } = req.body;
 
   if (!prompt) return res.status(400).json({ error: "Prompt ausente." });
 
-  // Check if all required API keys are available
-  if (!openaiApiKey || !elevenLabsApiKey || !elevenLabsVoiceId) {
+  if (!openaiApiKey) {
     console.error("Missing required API keys. Check environment variables.");
     return res.status(500).json({
       error: "Erro de configuração do servidor. Contate o administrador.",
-      details: "Missing API keys",
+      details: "Missing OpenAI API key",
     });
   }
 
-  console.log("\nHeaders recebidos:", req.headers);
-
   try {
-    // 🔹 Passo 1: ChatGPT gera a resposta
+    // Passo 1: ChatGPT gera a resposta
     const chatRes = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
@@ -45,7 +34,7 @@ router.post("/", async (req, res) => {
           {
             role: "system",
             content:
-              "Você é um assistente educacional amigável para prática de inglês conversacional. As respostas devem conter no maximo 580 caractéres.",
+              "Você é um assistente educacional amigável para prática de inglês conversacional. As respostas devem conter no máximo 480 caracteres.",
           },
           {
             role: "user",
@@ -65,36 +54,32 @@ router.post("/", async (req, res) => {
 
     const resposta = chatRes.data.choices[0].message.content;
 
-    // 🔹 Passo 2: ElevenLabs converte a resposta em áudio
-    const audioRes = await axios.post(
-      `https://api.elevenlabs.io/v1/text-to-speech/${elevenLabsVoiceId}`,
-      {
-        text: resposta,
-        voice_settings: {
-          stability: 0.4,
-          similarity_boost: 0.8,
-        },
-      },
-      {
-        headers: {
-          "xi-api-key": elevenLabsApiKey,
-          "Content-Type": "application/json",
-        },
-        responseType: "arraybuffer",
-      }
-    );
+    // Passo 2: Gerar áudio usando gTTS
+    const gtts = new gTTS(resposta, "en");
 
-    // 🔹 Envia o áudio em base64 + texto
-    const audioBase64 = Buffer.from(audioRes.data, "binary").toString("base64");
+    // Converter stream de áudio para buffer para enviar base64
+    const buffer = await new Promise((resolve, reject) => {
+      const buffers = [];
+      gtts.stream()
+        .on("data", (chunk) => buffers.push(chunk))
+        .on("end", () => resolve(Buffer.concat(buffers)))
+        .on("error", reject);
+    });
 
+    const audioBase64 = buffer.toString("base64");
+
+    // Enviar resposta + áudio base64
     res.status(200).json({
       resposta,
       audioBase64,
     });
   } catch (error) {
-    console.error("🔥 Erro completo:", error); // <-- log completo
-    console.error("🔥 Erro da API:", Buffer.from(error.response.data).toString("utf8")); // <-- erro da OpenAI ou ElevenLabs
-
+    console.error("🔥 Erro completo:", error);
+    if (error.response?.data) {
+      try {
+        console.error("🔥 Erro da API:", Buffer.from(error.response.data).toString("utf8"));
+      } catch {}
+    }
 
     res.status(500).json({ error: "Erro ao gerar resposta com voz." });
   }
