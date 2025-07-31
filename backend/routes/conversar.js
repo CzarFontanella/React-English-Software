@@ -93,7 +93,8 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     console.error("🔥 Erro completo:", error); // <-- log completo
-    console.error("🔥 Erro da API:", error.response?.data); // <-- erro da OpenAI ou ElevenLabs
+    console.error("🔥 Erro da API:", Buffer.from(error.response.data).toString("utf8")); // <-- erro da OpenAI ou ElevenLabs
+
 
     res.status(500).json({ error: "Erro ao gerar resposta com voz." });
   }
