@@ -34,7 +34,6 @@ router.post("/", async (req, res) => {
   }
 
   console.log("\nHeaders recebidos:", req.headers);
-  console.log("\nChave usada:", elevenLabsApiKey);
 
   try {
     // 🔹 Passo 1: ChatGPT gera a resposta
