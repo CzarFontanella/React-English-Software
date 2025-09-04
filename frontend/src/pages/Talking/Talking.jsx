@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import logoIA from "../../Assets/logo-ia.png";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
 import TalkingComponent from "../../Components/Pratica/Talking/TalkingComponent";
 import { auth, db } from "../../firebaseConfig";
@@ -70,7 +71,8 @@ const Talking = () => {
         };
       }
     } catch (error) {
-      if (import.meta.env.DEV) console.error("❌ Erro ao validar chave:", error);
+      if (import.meta.env.DEV)
+        console.error("❌ Erro ao validar chave:", error);
       return { success: false, message: "Erro de conexão com o servidor." };
     }
   };
@@ -121,26 +123,25 @@ const Talking = () => {
 
       {!emConversacao ? (
         <div className="start-section">
+          <div className="logo">
+            <img src={logoIA} alt="Logomarca Codi Academy" />
+          </div>
           <p className="body-text">
             🔹 Nesta atividade, você terá uma conversa em inglês com a IA por
             até 30 minutos.
             <br />
+            <button className="start-button" onClick={handleStartClick}>
+              Iniciar Conversa com IA
+            </button>
             <br />
-            📜 Regras:
+            📜 Regras da Atividade:
             <br />
-            <br />- Fale sobre qualquer assunto.
             <br />
-            <br />- A IA responde por voz.
+            - Fale sobre qualquer assunto.
             <br />
+            - A IA responde por voz.
             <br />- Você ganhará pontos ao longo da conversa.
-            <br />
-            <br />- 🎯 Objetivo: Melhore sua escuta e fala treinando
-            diariamente.
           </p>
-          
-          <button className="start-button" onClick={handleStartClick}>
-            Iniciar Conversa com IA
-          </button>
         </div>
       ) : (
         <TalkingComponent

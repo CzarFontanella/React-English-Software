@@ -31,7 +31,6 @@ body {
 .App .container {
     flex: 1;
     padding-inline: 3dvw;
-    padding-block: 3dvh;
     align-items: center;
     align-content: center;
     justify-items: center;

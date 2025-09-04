@@ -1,13 +1,18 @@
+.logo img {
+  width: 16rem;
+  transition: transform 0.3s ease-in-out;
+}
+
 .practice-container {
   display: flex;
   width: 100vw;
-  padding-inline: 1vw;
-  padding-block: 1vh;
+  padding-inline: 3dvw;
+  padding-block: 3dvh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: var(--fonte-cinza) !important;
-  max-width: 40rem;
+  max-width: 50rem;
 }
 
 .start-section {
@@ -17,12 +22,12 @@
 
 .body-text {
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.4;
   font-weight: 600;
 }
 
 .start-button {
-  margin-top: 3dvh;
+  margin-block: 3dvh;
   font-size: 16px;
   font-weight: 600;
   padding: 16px;

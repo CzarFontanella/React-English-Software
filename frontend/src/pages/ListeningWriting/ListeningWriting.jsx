@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import logoWrite from "../../Assets/logo-write.png";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
@@ -92,31 +93,24 @@ const ListeningWriting = () => {
 
       {!praticando ? (
         <div className="start-section">
+          <div className="logo">
+            <img src={logoWrite} alt="Logomarca Codi Academy" />
+          </div>
           <p className="body-text">
             🔹 Nesta atividade, você ouvirá frases em inglês e precisará
             digitá-las corretamente para aprimorar sua compreensão auditiva e
             ortografia.
             <br />
+            <button className="start-button" onClick={iniciarPratica}>
+              Iniciar Prática de Listening & Writing
+            </button>
             <br />
             📜 Regras da Atividade:
             <br />
             <br />
-            - Você pode reproduzir o áudio quantas vezes quiser antes de
-            responder.
-            <br />
-            <br />
             - Sua resposta deve ser exatamente igual ao áudio.
-            <br />
-            <br />
-            - Se errar, você poderá tentar novamente antes de avançar.
-            <br />
-            <br />
-            🎯 Objetivo: Melhore sua escuta e escrita treinando diariamente.
+            <br />- Se errar, você poderá tentar novamente antes de avançar.
           </p>
-
-          <button className="start-button" onClick={iniciarPratica}>
-            Iniciar Prática de Listening & Writing
-          </button>
         </div>
       ) : (
         <ListeningWritingComponent />

@@ -3,6 +3,8 @@
 .nav-container {
   position: fixed;
   bottom: 0;
+  left: 0;
+  z-index: 1000;
   height: 6dvh;
   width: 100dvw;
   display: flex;
@@ -11,8 +13,6 @@
   padding: 1dvw;
   background-color: var(--navbar-bg);
   border-top: 1px solid var(--gray-950);
-  flex-wrap: wrap;
-  align-content: center;
 }
 
 .center-container {

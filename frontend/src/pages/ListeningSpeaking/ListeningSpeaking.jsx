@@ -1,5 +1,6 @@
 import ListeningSpeakingComponent from "../../Components/Pratica/ListeningSpeaking/ListeningSpeakingComponent";
 import React, { useEffect, useState } from "react";
+import logoSpeak from "../../Assets/logo-speak.png";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
@@ -27,27 +28,26 @@ const ListeningSpeaking = () => {
     return () => unsubscribe();
   }, []);
 
-const handleStart = async () => {
-  const user = auth.currentUser;
-  if (!user) {
-    alert("❌ Você precisa estar logado para fazer as práticas.");
-    return;
-  }
+  const handleStart = async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("❌ Você precisa estar logado para fazer as práticas.");
+      return;
+    }
 
-  if (!isActivated) {
-    setModalOpen(true);
-    return;
-  }
+    if (!isActivated) {
+      setModalOpen(true);
+      return;
+    }
 
-  const podeGerar = await checkAudioLimit(user.uid);
-  if (!podeGerar) {
-    alert("❌ Você atingiu o limite diário de geração de áudios.");
-    return;
-  }
+    const podeGerar = await checkAudioLimit(user.uid);
+    if (!podeGerar) {
+      alert("❌ Você atingiu o limite diário de geração de áudios.");
+      return;
+    }
 
-  setPraticando(true);
-};
-
+    setPraticando(true);
+  };
 
   const validarChaveDeAtivacao = async (activationKey) => {
     if (!user) return { success: false, message: "Usuário não autenticado" };
@@ -91,34 +91,26 @@ const handleStart = async () => {
 
       {!praticando ? (
         <div className="start-section">
+          <div className="logo">
+            <img src={logoSpeak} alt="Logomarca Codi Academy" />
+          </div>
           <p className="body-text">
             🔹 Nesta atividade, você ouvirá frases em inglês e precisará
             repeti-las corretamente para aprimorar sua pronúncia e compreensão
             auditiva.
             <br />
+            <button className="start-button" onClick={handleStart}>
+              Iniciar Prática de Listening & Speaking
+            </button>
             <br />
             📜 Regras da Atividade:
             <br />
             <br />
-            - Você pode reproduzir o áudio quantas vezes quiser antes de
-            repetir.
-            <br />
-            <br />
             - Sua resposta deve ser o mais próxima possível da frase original.
             <br />
-            <br />
             - Pronúncia e entonação são avaliadas pela IA.
-            <br />
-            <br />
-            - Se errar, você poderá tentar novamente.
-            <br />
-            <br />
-            🎯 Objetivo: Melhore sua escuta e fala treinando diariamente.
+            <br />- Se errar, você poderá tentar novamente.
           </p>
-
-          <button className="start-button" onClick={handleStart}>
-            Iniciar Prática de Listening & Speaking
-          </button>
         </div>
       ) : (
         <ListeningSpeakingComponent />
