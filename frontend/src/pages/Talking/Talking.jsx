@@ -9,7 +9,7 @@ import "../Practice.css";
 
 const Talking = () => {
   const [emConversacao, setEmConversacao] = useState(false);
-  const [isActivated, setIsActivated] = useState(false);
+  const [isActivated, setIsActivated] = useState(true); // Temporariamente true para periodo gratuito
   const [modalOpen, setModalOpen] = useState(false);
   const [pointsSpeaking, setPointsSpeaking] = useState(0);
   const [user, setUser] = useState(null);

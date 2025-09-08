@@ -9,7 +9,7 @@ import { checkAudioLimit } from "../../utils/control";
 
 const ListeningSpeaking = () => {
   const [praticando, setPraticando] = useState(false);
-  const [isActivated, setIsActivated] = useState(false);
+  const [isActivated, setIsActivated] = useState(true); // Temporariamente true para periodo gratuito
   const [modalOpen, setModalOpen] = useState(false);
   const [user, setUser] = useState(null);
 
