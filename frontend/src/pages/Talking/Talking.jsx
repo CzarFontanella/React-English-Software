@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import logoIA from "../../Assets/logo-ia.png";
+import logoIA from "../../assets/logo-ia.png";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";
 import TalkingComponent from "../../Components/Pratica/Talking/TalkingComponent";
 import { auth, db } from "../../firebaseConfig";

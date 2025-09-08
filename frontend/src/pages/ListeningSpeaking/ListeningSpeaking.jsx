@@ -1,6 +1,6 @@
 import ListeningSpeakingComponent from "../../Components/Pratica/ListeningSpeaking/ListeningSpeakingComponent";
 import React, { useEffect, useState } from "react";
-import logoSpeak from "../../Assets/logo-speak.png";
+import logoSpeak from "../../assets/logo-speak.png";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";

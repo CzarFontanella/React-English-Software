@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import logoWrite from "../../Assets/logo-write.png";
+import logoWrite from "../../assets/logo-write.png";
 import { auth, db } from "../../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import ModalAuth from "../../Components/ModalAuth/ModalAuth";

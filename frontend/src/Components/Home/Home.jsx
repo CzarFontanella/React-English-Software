@@ -1,5 +1,5 @@
 import "./Home.css";
-import logoHome from "../../Assets/logo-home.png";
+import logoHome from "../../assets/logo-home.png";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { auth, db } from "../../firebaseConfig";
